@@ -72,11 +72,41 @@ def points(rankings, outcomes):
 winner_tally = {k:0 for k in predictions}
 winner_tally['tie']=0
 
-for w in winners(known_outcomes).values():
+each_win = winners(known_outcomes)
+
+# total possible win paths per person
+for w in each_win.values():
     winner_tally[w] += 1
-
 ordered_winner_tally = sorted(winner_tally.items(), key=lambda x: x[1], reverse=True)
-
+print("total possible win paths per person")
 print(ordered_winner_tally)
 
+# which events are most necessary for each person to win
+# people have each event, and each event has a count of wins when it was true, and when it was false
 
+each_question_empty_tf_buckets = {
+        'a': {'t': 0, 'f': 0},
+        'b': {'t': 0, 'f': 0},
+        'c': {'t': 0, 'f': 0},
+        'd': {'t': 0, 'f': 0},
+        'e': {'t': 0, 'f': 0},
+        'f': {'t': 0, 'f': 0},
+        'g': {'t': 0, 'f': 0},
+        'h': {'t': 0, 'f': 0},
+        'i': {'t': 0, 'f': 0},
+        'j': {'t': 0, 'f': 0},
+        'k': {'t': 0, 'f': 0},
+        'l': {'t': 0, 'f': 0},
+        'm': {'t': 0, 'f': 0},
+        'n': {'t': 0, 'f': 0},
+        'o': {'t': 0, 'f': 0},
+        'p': {'t': 0, 'f': 0},
+        'q': {'t': 0, 'f': 0},
+        'r': {'t': 0, 'f': 0},
+        's': {'t': 0, 'f': 0},
+        }
+
+each_person_with_empty_question_buckets = {k: each_question_empty_tf_buckets for k in predictions}
+
+import json
+print(json.dumps(each_person_with_empty_question_buckets, indent=4))
