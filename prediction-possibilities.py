@@ -15,39 +15,39 @@ predictions = {
         'am': [7,9,11,6,16,19,10,13,14,12,8,5,18,2,17,1,4,15,3],
         }
 
-known_outcomes = [
-        'm', #A
-        'n', #B
-        'y', #C
-        'm', #D
-        'm', #E
-        'm', #F
-        'm', #G
-        'm', #H
-        'n', #1
-        'm', #J
-        'n', #K
-        'y', #L
-        'm', #M
-        'm', #N
-        'm', #O
-        'm', #P
-        'm', #Q
-        'n', #R
-        'y', #S
-        ]
+known_outcomes = {
+        'a': 'm',
+        'b': 'n',
+        'c': 'y',
+        'd': 'm',
+        'e': 'm',
+        'f': 'm',
+        'g': 'm',
+        'h': 'm',
+        'i': 'n',
+        'j': 'm',
+        'k': 'n',
+        'l': 'y',
+        'm': 'm',
+        'n': 'm',
+        'o': 'm',
+        'p': 'm',
+        'q': 'm',
+        'r': 'n',
+        's': 'y',
+}
 
 # returns a dictionary of outcome sequences and winners
 def winners(outcomes):
     if 'm' not in outcomes:
         points_per_prediction = {k: points(v, outcomes) for k, v in predictions.items()}
         max_points = max(points_per_prediction.values())
-        winner = []
+        possible_winners = []
         for predictor, persons_points in points_per_prediction.items():
             if persons_points==max_points:
-                winner.append(predictor)
-        if len(winner)==1:
-            return {''.join(outcomes): winner[0]}
+                possible_winners.append(predictor)
+        if len(possible_winners)==1:
+            return {''.join(outcomes): possible_winners[0]}
         else:
             return {''.join(outcomes): 'tie'}
     else:
@@ -72,41 +72,43 @@ def points(rankings, outcomes):
 winner_tally = {k:0 for k in predictions}
 winner_tally['tie']=0
 
-each_win = winners(known_outcomes)
+each_win = winners(list(known_outcomes.values()))
 
-# total possible win paths per person
+# Question 1: how many total possible win paths per person?
 for w in each_win.values():
     winner_tally[w] += 1
 ordered_winner_tally = sorted(winner_tally.items(), key=lambda x: x[1], reverse=True)
 print("total possible win paths per person")
 print(ordered_winner_tally)
 
-# which events are most necessary for each person to win
+# Question 2: which events are most necessary for each person to win?
+
+question_ids=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's']
+def new_empty_yn_bucket():
+    return {'y': 0, 'n': 0}
+def new_each_question_empty_yn_buckets():
+    return {k: new_empty_yn_bucket() for k in question_ids}
 # people have each event, and each event has a count of wins when it was true, and when it was false
+each_person_with_question_buckets = {k[0]: new_each_question_empty_yn_buckets() for k in ordered_winner_tally}
 
-each_question_empty_tf_buckets = {
-        'a': {'t': 0, 'f': 0},
-        'b': {'t': 0, 'f': 0},
-        'c': {'t': 0, 'f': 0},
-        'd': {'t': 0, 'f': 0},
-        'e': {'t': 0, 'f': 0},
-        'f': {'t': 0, 'f': 0},
-        'g': {'t': 0, 'f': 0},
-        'h': {'t': 0, 'f': 0},
-        'i': {'t': 0, 'f': 0},
-        'j': {'t': 0, 'f': 0},
-        'k': {'t': 0, 'f': 0},
-        'l': {'t': 0, 'f': 0},
-        'm': {'t': 0, 'f': 0},
-        'n': {'t': 0, 'f': 0},
-        'o': {'t': 0, 'f': 0},
-        'p': {'t': 0, 'f': 0},
-        'q': {'t': 0, 'f': 0},
-        'r': {'t': 0, 'f': 0},
-        's': {'t': 0, 'f': 0},
-        }
+for events, winner in each_win.items():
+    for idx, question_id in enumerate(question_ids):
+        event_outcome = events[idx]
+        each_person_with_question_buckets[winner][question_id][event_outcome]+=1
 
-each_person_with_empty_question_buckets = {k: each_question_empty_tf_buckets for k in predictions}
+import copy
+each_person_only_maybe_questions = copy.deepcopy(each_person_with_question_buckets)
+for person, questions in each_person_with_question_buckets.items():
+    for question in questions:
+        if known_outcomes[question] is not 'm':
+            del each_person_only_maybe_questions[person][question]
 
-import json
-print(json.dumps(each_person_with_empty_question_buckets, indent=4))
+each_person_question_percentage = copy.deepcopy(each_person_only_maybe_questions)
+for person, questions in each_person_only_maybe_questions.items():
+    for question in questions:
+        raw_percentage = questions[question]['y'] / (questions[question]['y'] + questions[question]['n'])
+        each_person_question_percentage[person][question] = '{:.1%}'.format(raw_percentage)
+
+for person, questions in each_person_question_percentage.items():
+    print("Contestant " + person + " has " + str(winner_tally[person]) + " ways to win, and needs the following to happen (high percentages) or not (low percentages)")
+    print(questions)
