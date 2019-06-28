@@ -97,8 +97,13 @@ for events, winner in each_win.items():
         each_person_with_question_buckets[winner][question_id][event_outcome]+=1
 
 import copy
-each_person_only_maybe_questions = copy.deepcopy(each_person_with_question_buckets)
+only_people_with_win_paths = copy.deepcopy(each_person_with_question_buckets)
 for person, questions in each_person_with_question_buckets.items():
+    if winner_tally[person] is 0:
+        del only_people_with_win_paths[person]
+
+each_person_only_maybe_questions = copy.deepcopy(only_people_with_win_paths)
+for person, questions in only_people_with_win_paths.items():
     for question in questions:
         if known_outcomes[question] is not 'm':
             del each_person_only_maybe_questions[person][question]
