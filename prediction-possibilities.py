@@ -16,25 +16,25 @@ predictions = {
         }
 
 known_outcomes = {
-        'a': 'm',
-        'b': 'n',
-        'c': 'y',
-        'd': 'm',
-        'e': 'm',
-        'f': 'm',
-        'g': 'm',
-        'h': 'm',
-        'i': 'n',
-        'j': 'm',
-        'k': 'n',
-        'l': 'y',
-        'm': 'm',
-        'n': 'm',
-        'o': 'm',
-        'p': 'm',
-        'q': 'm',
-        'r': 'n',
-        's': 'y',
+        'a': 'm', # New Supreme Court vacancy
+        'b': 'n', # Only solo artists achieve Billboard #1s
+        'c': 'y', # Daenerys Targaryen dies
+        'd': 'y', # 3+ women debating at the 1st Democratic Presidential debate
+        'e': 'm', # Aladdin finishes the year 7th place or worse
+        'f': 'm', # Seattle's NHL Team is named and it's not an animal
+        'g': 'm', # Donald Trump is no longer President
+        'h': 'm', # Buzz Lightyear gets married
+        'i': 'n', # King Kong is nominated for Best Musical and loses
+        'j': 'm', # Mel Brooks dies
+        'k': 'n', # A cat or dog team wins the March Madness Tournament
+        'l': 'y', # 4+ of the original 6 Avengers survive Endgame
+        'm': 'm', # 1-day stock plummet record for a single company is broken
+        'n': 'm', # Tom Brady is not the Patriots starting QB at the end of 2019
+        'o': 'm', # Pennywise the Clown is a playable character in Mortal Kombat 11
+        'p': 'm', # 5+ self-driving car fatalities
+        'q': 'm', # Miley Cyrus confirms pregnancy
+        'r': 'n', # Episode 9 will be the 1st Star Wars subtitle only 1 or 2 words long
+        's': 'y', # The UK is still part of the EU on March 30th
 }
 
 # returns a dictionary of outcome sequences and winners
