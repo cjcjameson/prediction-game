@@ -32,7 +32,7 @@ known_outcomes = {
         'n': 'm', # Tom Brady is not the Patriots starting QB at the end of 2019
         'o': 'm', # Pennywise the Clown is a playable character in Mortal Kombat 11
         'p': 'm', # 5+ self-driving car fatalities
-        'q': 'm', # Miley Cyrus confirms pregnancy
+        'q': 'n', # Miley Cyrus confirms pregnancy
         'r': 'n', # Episode 9 will be the 1st Star Wars subtitle only 1 or 2 words long
         's': 'y', # The UK is still part of the EU on March 30th
 }
