@@ -23,7 +23,7 @@ known_outcomes = {
         'e': 'm', # Aladdin finishes the year 7th place or worse
         'f': 'm', # Seattle's NHL Team is named and it's not an animal
         'g': 'm', # Donald Trump is no longer President
-        'h': 'm', # Buzz Lightyear gets married
+        'h': 'n', # Buzz Lightyear gets married
         'i': 'n', # King Kong is nominated for Best Musical and loses
         'j': 'm', # Mel Brooks dies
         'k': 'n', # A cat or dog team wins the March Madness Tournament
