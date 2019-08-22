@@ -30,7 +30,7 @@ known_outcomes = {
         'l': 'y', # 4+ of the original 6 Avengers survive Endgame
         'm': 'm', # 1-day stock plummet record for a single company is broken
         'n': 'm', # Tom Brady is not the Patriots starting QB at the end of 2019
-        'o': 'm', # Pennywise the Clown is a playable character in Mortal Kombat 11
+        'o': 'n', # Pennywise the Clown is a playable character in Mortal Kombat 11
         'p': 'm', # 5+ self-driving car fatalities
         'q': 'n', # Miley Cyrus confirms pregnancy
         'r': 'n', # Episode 9 will be the 1st Star Wars subtitle only 1 or 2 words long
