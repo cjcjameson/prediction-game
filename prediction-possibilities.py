@@ -20,7 +20,7 @@ known_outcomes = {
         'b': 'n', # Only solo artists achieve Billboard #1s
         'c': 'y', # Daenerys Targaryen dies
         'd': 'y', # 3+ women debating at the 1st Democratic Presidential debate
-        'e': 'm', # Aladdin finishes the year 7th place or worse
+        'e': 'y', # Aladdin finishes the year 7th place or worse
         'f': 'n', # Seattle's NHL Team is named and it's not an animal
         'g': 'm', # Donald Trump is no longer President
         'h': 'n', # Buzz Lightyear gets married
