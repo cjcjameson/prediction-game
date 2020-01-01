@@ -1,15 +1,30 @@
 #!/usr/bin/env python
 
+import collections
+import sys
+
 predictions = {
         #'x': [ a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t],
         'am': [ 1,10, 9,15, 8, 5,17,11, 4, 7,12, 6,16,19,20,14,18, 3, 2,13],
         'jc': [ 7,20, 1,16,18,14,17,15,12, 4,11, 5, 3,13,10, 6,19, 9, 2, 8],
-        'jj': [ 8,15,16, 2,14,11, 4, 5,18,13, 7,10, 3,19,17, 6,20,12, 3, 9],
+        'jj': [ 8,15,16, 2,14,11, 4, 5,18,13, 7,10, 1,19,17, 6,20,12, 3, 9],
         'su': [ 9,20, 6,19,15,10, 8,14,18, 4,11,12, 7,17, 2, 5, 1,16, 3,13],
-        'ek': [10,18,17,12,11,13,15,19, 1, 1, 9, 8, 7,20,16, 5, 6, 4, 3, 2], # L twice...!
+        'ek': [10,18,17,12,11,13,15,19, 1, 2, 9,14, 8,20,16, 6, 7, 5, 4, 3],
         'le': [18,19, 4, 7,20,12,13,11, 8,15, 6, 5, 3,16,17, 9,10, 1, 2,14],
         'cj': [10,15, 6,16,13,14,20,19,12,18,17,11, 5, 3, 4, 7, 9, 8, 1, 2],
+        'al': [11,19, 3,20,13,16,20,12, 8,10,13, 6,14,18, 1, 7, 2, 5, 9, 4], # missing E and G; M and P twice
         }
+
+# validate predictions
+def validate_predictions():
+    for contestant, ordering in predictions.items():
+        count_by_number = collections.Counter(ordering)
+        expected = collections.Counter(range(1,21))
+        if count_by_number != expected:
+            print("predictions are not 1-20 for ", contestant)
+            sys.exit()
+
+validate_predictions()
 
 known_outcomes = {
         'a': 'm', # Arizona Turns Blue on Election Night
