@@ -12,7 +12,7 @@ predictions = {
         'ek': [10,18,17,12,11,13,15,19, 1, 2, 9,14, 8,20,16, 6, 7, 5, 4, 3],
         'le': [18,19, 4, 7,20,12,13,11, 8,15, 6, 5, 3,16,17, 9,10, 1, 2,14],
         'cj': [10,15, 6,16,13,14,20,19,12,18,17,11, 5, 3, 4, 7, 9, 8, 1, 2],
-        'al': [11,19, 3,20,13,16,20,12, 8,10,13, 6,14,18, 1, 7, 2, 5, 9, 4], # missing E and G; M and P twice
+        # 'al': [11,19, 3,20,13,16,20,12, 8,10,13, 6,14,18, 1, 7, 2, 5, 9, 4], # missing E and G; M and P twice
         }
 
 # validate predictions
@@ -87,11 +87,17 @@ winner_tally['tie']=0
 each_win = winners(list(known_outcomes.values()))
 
 # Question 1: how many total possible win paths per person?
+total_possible = len(each_win)
 for w in each_win.values():
     winner_tally[w] += 1
-ordered_winner_tally = sorted(winner_tally.items(), key=lambda x: x[1], reverse=True)
-print("total possible win paths per person")
-print(ordered_winner_tally)
+percentage_wins = winner_tally.copy()
+for winner, tally in percentage_wins.items():
+    percentage_wins[winner] = float(tally)/float(total_possible)
+ordered_winner_percentages = sorted(percentage_wins.items(), key=lambda x: x[1], reverse=True)
+
+print("percent of win-paths per person")
+for winner, p in ordered_winner_percentages:
+    print(winner, ": ", '{:.1%}'.format(p))
 
 # Question 2: which events are most necessary for each person to win?
 
@@ -101,7 +107,7 @@ def new_empty_yn_bucket():
 def new_each_question_empty_yn_buckets():
     return {k: new_empty_yn_bucket() for k in question_ids}
 # people have each event, and each event has a count of wins when it was true, and when it was false
-each_person_with_question_buckets = {k[0]: new_each_question_empty_yn_buckets() for k in ordered_winner_tally}
+each_person_with_question_buckets = {k[0]: new_each_question_empty_yn_buckets() for k in ordered_winner_percentages}
 
 for events, winner in each_win.items():
     for idx, question_id in enumerate(question_ids):
