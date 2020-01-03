@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import collections
+import os
 import sys
 
 predictions = {
@@ -137,8 +138,16 @@ each_person_question_percentage = copy.deepcopy(each_person_only_maybe_questions
 for person, questions in each_person_only_maybe_questions.items():
     for question in questions:
         raw_percentage = questions[question]['y'] / (questions[question]['y'] + questions[question]['n'])
-        each_person_question_percentage[person][question] = '{:.1%}'.format(raw_percentage)
+        each_person_question_percentage[person][question] = raw_percentage
 
 for person, questions in each_person_question_percentage.items():
     print("Contestant " + person + " has " + str(winner_tally[person]) + " ways to win, and needs the following to happen (high percentages) or not (low percentages)")
-    print(questions)
+
+    ordered_qs_by_need_percent = sorted(questions.items(), key=lambda x: x[1], reverse=True)
+
+    if os.environ.get('FULL_GUTS'):
+        print(questions)
+
+                                # unpack the tuple
+    print('\t{}: {:.1%}'.format(*ordered_qs_by_need_percent[0]))
+    print('\t{}: {:.1%}'.format(*ordered_qs_by_need_percent[-1]))
