@@ -52,7 +52,7 @@ known_outcomes = {
         'o': 'm', # "Hentai" searched more than "Lesbian" on Pornhub
         'p': 'm', # Pixar Voice Actor is a Masked Singer
         'q': 'm', # Instagram's Instagram Passes 400 Million Followers
-        'r': 'm', # BostonDynamics Robots Do a Group Dance
+        'r': 'y', # BostonDynamics Robots Do a Group Dance
         's': 'y', # Cardi B or Billie Eilish DIES... in a music video
         't': 'm', # "Baby Yoda" Sneezes
 }
