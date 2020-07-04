@@ -53,7 +53,7 @@ known_outcomes = {
         'p': 'm', # Pixar Voice Actor is a Masked Singer
         'q': 'm', # Instagram's Instagram Passes 400 Million Followers
         'r': 'm', # BostonDynamics Robots Do a Group Dance
-        's': 'm', # Cardi B or Billie Eilish DIES... in a music video
+        's': 'y', # Cardi B or Billie Eilish DIES... in a music video
         't': 'm', # "Baby Yoda" Sneezes
 }
 
