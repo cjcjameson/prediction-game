@@ -39,7 +39,7 @@ known_outcomes = {
         'b': 'm', # Joey Chestnut Eats 71+ Hot Dogs on July 4th
         'c': 'm', # Pat Sajak Announces Retirement
         'd': 'm', # Loki Appears in the Avengers Video Game
-        'e': 'm', # Japan Wins at Least 44 Medals at the Olympics
+        'e': 'n', # Japan Wins at Least 44 Medals at the Olympics
         'f': 'm', # Miss Universe is from the Western Hemisphere
         'g': 'm', # 7th Straight Year a Different Team Wins the World Series
         'h': 'm', # Joe Biden is not the Democratic Presidential Nominee
