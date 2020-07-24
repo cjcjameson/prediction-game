@@ -44,7 +44,7 @@ known_outcomes = {
         'g': 'm', # 7th Straight Year a Different Team Wins the World Series
         'h': 'm', # Joe Biden is not the Democratic Presidential Nominee
         'i': 'm', # Mulan FInishes the Year 8th Place or Worse
-        'j': 'm', # Seattle NHL Name is Sockeyes, Emeralds, or Kraken
+        'j': 'y', # Seattle NHL Name is Sockeyes, Emeralds, or Kraken
         'k': 'm', # Female-Named Atlantic Hurricane is Deadliest
         'l': 'm', # No One Beats American Ninja Warrior's Stage 3
         'm': 'm', # A Country's National Flag is Changed
