@@ -42,7 +42,7 @@ known_outcomes = {
         'e': 'n', # Japan Wins at Least 44 Medals at the Olympics
         'f': 'm', # Miss Universe is from the Western Hemisphere
         'g': 'm', # 7th Straight Year a Different Team Wins the World Series
-        'h': 'm', # Joe Biden is not the Democratic Presidential Nominee
+        'h': 'n', # Joe Biden is not the Democratic Presidential Nominee
         'i': 'm', # Mulan FInishes the Year 8th Place or Worse
         'j': 'y', # Seattle NHL Name is Sockeyes, Emeralds, or Kraken
         'k': 'm', # Female-Named Atlantic Hurricane is Deadliest
