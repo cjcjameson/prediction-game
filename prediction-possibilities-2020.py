@@ -43,7 +43,7 @@ known_outcomes = {
         'f': 'm', # Miss Universe is from the Western Hemisphere
         'g': 'm', # 7th Straight Year a Different Team Wins the World Series
         'h': 'n', # Joe Biden is not the Democratic Presidential Nominee
-        'i': 'm', # Mulan FInishes the Year 8th Place or Worse
+        'i': 'y', # Mulan Finishes the Year 8th Place or Worse
         'j': 'y', # Seattle NHL Name is Sockeyes, Emeralds, or Kraken
         'k': 'm', # Female-Named Atlantic Hurricane is Deadliest
         'l': 'm', # No One Beats American Ninja Warrior's Stage 3
