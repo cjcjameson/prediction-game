@@ -48,7 +48,7 @@ known_outcomes = {
         'k': 'm', # Female-Named Atlantic Hurricane is Deadliest
         'l': 'm', # No One Beats American Ninja Warrior's Stage 3
         'm': 'm', # A Country's National Flag is Changed
-        'n': 'm', # New 007 Saves Old 007's Life
+        'n': 'n', # New 007 Saves Old 007's Life
         'o': 'm', # "Hentai" searched more than "Lesbian" on Pornhub
         'p': 'm', # Pixar Voice Actor is a Masked Singer
         'q': 'm', # Instagram's Instagram Passes 400 Million Followers
