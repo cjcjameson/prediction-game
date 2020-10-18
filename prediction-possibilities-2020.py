@@ -151,3 +151,24 @@ for person, questions in each_person_question_percentage.items():
                                 # unpack the tuple
     print('\t{}: {:.1%}'.format(*ordered_qs_by_need_percent[0]))
     print('\t{}: {:.1%}'.format(*ordered_qs_by_need_percent[-1]))
+
+# Question 3: for each maybe-question, what happens?
+print("Question 3: for each maybe-question, what happens?")
+
+maybe_question_need_by_person = {}
+
+for question, outcome in known_outcomes.items():
+    if outcome == 'm':
+        maybe_question_need_by_person[question] = {}
+
+for person, questions in each_person_question_percentage.items():
+    for question, percentage in questions.items():
+        maybe_question_need_by_person[question][person] = percentage
+
+for question, person_percentages in maybe_question_need_by_person.items():
+    print("Question " + question + " coming TRUE will help (high percentages) or hurt (low percentages) these people")
+
+    ordered_people_by_need_percent = sorted(person_percentages.items(), key=lambda x: x[1], reverse=True)
+
+    for person_need_percent in ordered_people_by_need_percent:
+        print('\t{}: {:.1%}'.format(*person_need_percent))
