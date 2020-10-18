@@ -109,7 +109,7 @@ for winner, p in ordered_winner_percentages:
 
 # Question 2: which events are most necessary for each person to win?
 
-question_ids=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's']
+question_ids=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't']
 def new_empty_yn_bucket():
     return {'y': 0, 'n': 0}
 def new_each_question_empty_yn_buckets():
