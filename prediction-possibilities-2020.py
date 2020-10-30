@@ -46,7 +46,7 @@ known_outcomes = {
         'i': 'y', # Mulan Finishes the Year 8th Place or Worse
         'j': 'y', # Seattle NHL Name is Sockeyes, Emeralds, or Kraken
         'k': 'm', # Female-Named Atlantic Hurricane is Deadliest
-        'l': 'm', # No One Beats American Ninja Warrior's Stage 3
+        'l': 'y', # No One Beats American Ninja Warrior's Stage 3
         'm': 'm', # A Country's National Flag is Changed
         'n': 'n', # New 007 Saves Old 007's Life
         'o': 'm', # "Hentai" searched more than "Lesbian" on Pornhub
