@@ -172,3 +172,29 @@ for question, person_percentages in maybe_question_need_by_person.items():
 
     for person_need_percent in ordered_people_by_need_percent:
         print('\t{}: {:.1%}'.format(*person_need_percent))
+
+# Question 4: who wins, organized by how many "yes" outcomes
+print("Question 4: who wins, organized by how many more 'yes' outcomes")
+
+maybes_count = sum(1 for outcome in known_outcomes.values() if outcome == "m")
+yesses_already_count = sum(1 for outcome in known_outcomes.values() if outcome == "y")
+
+# def new_tally_by_guesser():
+#    return {"tie": 0}
+
+how_many_more_yes_buckets = {k:{} for k in range(maybes_count+1)}
+
+for outcome, winner in each_win.items():
+    how_many_more_yes = outcome.count("y") - yesses_already_count
+    if not winner in how_many_more_yes_buckets[how_many_more_yes]:
+        how_many_more_yes_buckets[how_many_more_yes][winner] = 1
+    else:
+        how_many_more_yes_buckets[how_many_more_yes][winner] += 1
+
+for how_many_more_yes_bucket, person_counts in how_many_more_yes_buckets.items():
+    print("If there are " + str(how_many_more_yes_bucket) + " more yesses, then these people have win-paths:")
+
+    ordered_people_by_count = sorted(person_counts.items(), key=lambda x: x[1], reverse=True)
+
+    for person_count in ordered_people_by_count:
+        print('\t{}: {}'.format(*person_count))
