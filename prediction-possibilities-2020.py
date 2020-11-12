@@ -35,7 +35,7 @@ def validate_predictions():
 validate_predictions()
 
 known_outcomes = {
-        'a': 'm', # Arizona Turns Blue on Election Night
+        'a': 'y', # Arizona Turns Blue on Election Night
         'b': 'y', # Joey Chestnut Eats 71+ Hot Dogs on July 4th
         'c': 'm', # Pat Sajak Announces Retirement
         'd': 'y', # Loki Appears in the Avengers Video Game
