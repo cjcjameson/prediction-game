@@ -45,7 +45,7 @@ known_outcomes = {
         'h': 'n', # Joe Biden is not the Democratic Presidential Nominee
         'i': 'y', # Mulan Finishes the Year 8th Place or Worse
         'j': 'y', # Seattle NHL Name is Sockeyes, Emeralds, or Kraken
-        'k': 'm', # Female-Named Atlantic Hurricane is Deadliest
+        'k': 'n', # Female-Named Atlantic Hurricane is Deadliest
         'l': 'y', # No One Beats American Ninja Warrior's Stage 3
         'm': 'm', # A Country's National Flag is Changed
         'n': 'n', # New 007 Saves Old 007's Life
