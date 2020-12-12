@@ -40,7 +40,7 @@ known_outcomes = {
         'c': 'm', # Pat Sajak Announces Retirement
         'd': 'y', # Loki Appears in the Avengers Video Game
         'e': 'n', # Japan Wins at Least 44 Medals at the Olympics
-        'f': 'm', # Miss Universe is from the Western Hemisphere
+        'f': 'n', # Miss Universe is from the Western Hemisphere
         'g': 'y', # 7th Straight Year a Different Team Wins the World Series
         'h': 'n', # Joe Biden is not the Democratic Presidential Nominee
         'i': 'y', # Mulan Finishes the Year 8th Place or Worse
