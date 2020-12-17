@@ -50,7 +50,7 @@ known_outcomes = {
         'm': 'm', # A Country's National Flag is Changed
         'n': 'n', # New 007 Saves Old 007's Life
         'o': 'm', # "Hentai" searched more than "Lesbian" on Pornhub
-        'p': 'm', # Pixar Voice Actor is a Masked Singer
+        'p': 'n', # Pixar Voice Actor is a Masked Singer
         'q': 'm', # Instagram's Instagram Passes 400 Million Followers
         'r': 'y', # BostonDynamics Robots Do a Group Dance
         's': 'y', # Cardi B or Billie Eilish DIES... in a music video
