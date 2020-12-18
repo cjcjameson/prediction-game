@@ -54,7 +54,7 @@ known_outcomes = {
         'q': 'm', # Instagram's Instagram Passes 400 Million Followers
         'r': 'y', # BostonDynamics Robots Do a Group Dance
         's': 'y', # Cardi B or Billie Eilish DIES... in a music video
-        't': 'm', # "Baby Yoda" Sneezes
+        't': 'n', # "Baby Yoda" Sneezes
 }
 
 # returns a dictionary of outcome sequences and winners
