@@ -22,27 +22,27 @@ def validate_predictions():
 validate_predictions()
 
 known_outcomes = {
-        'a': 'm', # Arizona Turns Blue on Election Night
-        'b': 'm', # Joey Chestnut Eats 71+ Hot Dogs on July 4th
-        'c': 'm', # Pat Sajak Announces Retirement
-        'd': 'm', # Loki Appears in the Avengers Video Game
-        'e': 'm', # Japan Wins at Least 44 Medals at the Olympics
-        'f': 'm', # Miss Universe is from the Western Hemisphere
-        'g': 'm', # 7th Straight Year a Different Team Wins the World Series
-        'h': 'm', # Joe Biden is not the Democratic Presidential Nominee
-        'i': 'm', # Mulan Finishes the Year 8th Place or Worse
-        'j': 'm', # Seattle NHL Name is Sockeyes, Emeralds, or Kraken
-        'k': 'm', # Female-Named Atlantic Hurricane is Deadliest
-        'l': 'm', # No One Beats American Ninja Warrior's Stage 3
-        'm': 'm', # A Country's National Flag is Changed
-        'n': 'm', # New 007 Saves Old 007's Life
-        'o': 'm', # "Hentai" searched more than "Lesbian" on Pornhub
-        'p': 'm', # Pixar Voice Actor is a Masked Singer
-        'q': 'm', # Instagram's Instagram Passes 400 Million Followers
-        'r': 'm', # BostonDynamics Robots Do a Group Dance
-        's': 'm', # Cardi B or Billie Eilish DIES... in a music video
-        't': 'm', # "Baby Yoda" Sneezes
-	'u': 'm', # 2021! Work-In-Progress
+        'a': 'm', # Democrats gain one or both Senate seats (GA January)
+        'b': 'm', # Winds of Winder STILL unpublished
+        'c': 'm', # NHL Kings win more than NBA Kings
+        'd': 'm', # "Dugong" is a Jeopardy! answer or clue
+        'e': 'm', # Trump is detained, flees country, or dies
+        'f': 'm', # Smash Bros. character in Olympic Ceremony
+        'g': 'm', # New 007 saves old 007's life
+        'h': 'm', # "Lil" Artist has a Top 10 Billboard hit
+        'i': 'm', # Miss Universe isn't from Africa or Europe
+        'j': 'm', # LeBron is Tune Squad all-time point leader
+        'k': 'm', # < 2000 daily global COVID-19 deaths
+        'l': 'm', # OnlyFans joke on Last Week Tonight
+        'm': 'm', # 2 different Battlebots champions
+        'n': 'm', # Americone Dream outsells Chunky Monkey
+        'o': 'm', # LiMu emu pecks someone
+        'p': 'm', # Axis Powers countries win 111+ medals
+        'q': 'm', # Someone loses a limb... in an SNL Sketch
+        'r': 'm', # Ninja Warrior's stage 3 beaten
+        's': 'm', # Sexiest Man Alive is a repeat winner
+        't': 'm', # NASA reaches (Bruno) Mars ('s Twitter following)
+        'u': 'm', # Google Doodle of poodles or noodles
 }
 
 # returns a dictionary of outcome sequences and winners
