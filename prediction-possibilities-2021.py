@@ -3,6 +3,7 @@
 import collections
 import os
 import sys
+import statistics
 
 predictions = {
         #'x': [ a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u],
@@ -24,6 +25,7 @@ predictions = {
         'HR': [17,20, 9, 8, 4, 5, 3,15,10,11,21,16, 6, 1, 7, 2,14,18,19,12,13],
         'AL': [19, 4, 3, 2, 8, 7,15,20,13, 6, 5,17, 9,16,10,11,12,18, 1,14,21],
         'JJ': [20,17, 1, 5,11,10,13,18,16,14, 7, 8,15,21, 2,19, 4, 9, 6,12, 3],
+        # 'MM': [21,19, 3, 1, 4,17,13,18,20,16,11,15, 6,14, 5,10, 9, 7, 2,12, 8],
         }
 
 # validate predictions
@@ -36,6 +38,7 @@ def validate_predictions():
             sys.exit()
 
 validate_predictions()
+
 
 known_outcomes = {
         'a': 'y', # Democrats gain one or both Senate seats (GA January)
@@ -60,6 +63,9 @@ known_outcomes = {
         't': 'm', # NASA reaches (Bruno) Mars ('s Twitter following)
         'u': 'm', # Google Doodle of poodles or noodles
 }
+
+question_ids=known_outcomes.keys()
+
 
 # returns a dictionary of outcome sequences and winners
 def winners(outcomes):
@@ -97,9 +103,9 @@ winner_tally = {k:0 for k in predictions}
 winner_tally['tie']=0
 
 each_win = winners(list(known_outcomes.values()))
+total_possible = len(each_win)
 
 # Question 1: how many total possible win paths per person?
-total_possible = len(each_win)
 for w in each_win.values():
     winner_tally[w] += 1
 percentage_wins = winner_tally.copy()
@@ -113,7 +119,6 @@ for winner, p in ordered_winner_percentages:
 
 # Question 2: which events are most necessary for each person to win?
 
-question_ids=known_outcomes.keys()
 def new_empty_yn_bucket():
     return {'y': 0, 'n': 0}
 def new_each_question_empty_yn_buckets():
@@ -202,3 +207,47 @@ for how_many_more_yes_bucket, person_counts in how_many_more_yes_buckets.items()
 
     for person_count in ordered_people_by_count:
         print('\t{}: {}'.format(*person_count))
+
+
+# do people have more win-paths because they're just guessing differently than the wisdom of the crowds?
+# Or does someone have reasonable guesses, and also a clear opportunity?
+def mean_difference_analysis():
+
+    questions_values = {}
+
+    for index, question in enumerate(question_ids):
+        this_question_values = []
+        for prediction_list in predictions.values():
+            this_question_values.append(prediction_list[index])
+
+        questions_values[question] = this_question_values
+
+    questions_means = {q:statistics.mean(values) for (q,values) in questions_values.items()}
+    questions_means_sorted = dict(sorted(questions_means.items(), key=lambda item: item[1], reverse=True))
+    questions_means_sorted_rounded = {q:round(mean,1) for (q,mean) in questions_means_sorted.items()}
+    print()
+    print("mean question ranking")
+    print(questions_means_sorted_rounded)
+
+    questions_medians = {q:statistics.median(values) for (q,values) in questions_values.items()}
+    questions_medians_sorted = dict(sorted(questions_medians.items(), key=lambda item: item[1], reverse=True))
+    print()
+    print("median question ranking")
+    print(questions_medians_sorted)
+
+    # what would the mean prediction order be? mostly driven by the mean, with some influence from median
+    mm_prediction = [21,19, 3, 1, 4,17,13,18,20,16,11,15, 6,14, 5,10, 9, 7, 2,12, 8]
+
+    mean_absolute_error_by_person = {}
+    for person, prediction in predictions.items():
+        absolute_errors = []
+        for p1, p2 in zip(prediction, mm_prediction):
+            absolute_errors.append(abs(p1-p2))
+        mean_absolute_error_by_person[person] = round(statistics.mean(absolute_errors),2)
+
+    mae_sorted = dict(sorted(mean_absolute_error_by_person.items(), key=lambda item: item[1], reverse=True))
+    print()
+    print("mean absolute error from the collective mean prediction")
+    print(mae_sorted)
+
+mean_difference_analysis()
