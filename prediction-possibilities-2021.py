@@ -38,14 +38,14 @@ def validate_predictions():
 validate_predictions()
 
 known_outcomes = {
-        'a': 'm', # Democrats gain one or both Senate seats (GA January)
+        'a': 'y', # Democrats gain one or both Senate seats (GA January)
         'b': 'm', # Winds of Winder STILL unpublished
         'c': 'm', # NHL Kings win more than NBA Kings
         'd': 'm', # "Dugong" is a Jeopardy! answer or clue
         'e': 'm', # Trump is detained, flees country, or dies
         'f': 'm', # Smash Bros. character in Olympic Ceremony
         'g': 'm', # New 007 saves old 007's life
-        'h': 'm', # "Lil" Artist has a Top 10 Billboard hit
+        'h': 'y', # "Lil" Artist has a Top 10 Billboard hit
         'i': 'm', # Miss Universe isn't from Africa or Europe
         'j': 'm', # LeBron is Tune Squad all-time point leader
         'k': 'm', # < 2000 daily global COVID-19 deaths
