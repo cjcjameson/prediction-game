@@ -60,7 +60,7 @@ known_outcomes = {
         'q': 'm', # Someone loses a limb... in an SNL Sketch
         'r': 'm', # Ninja Warrior's stage 3 beaten
         's': 'm', # Sexiest Man Alive is a repeat winner
-        't': 'm', # NASA reaches (Bruno) Mars ('s Twitter following)
+        't': 'y', # NASA reaches (Bruno) Mars ('s Twitter following)
         'u': 'm', # Google Doodle of poodles or noodles
 }
 
