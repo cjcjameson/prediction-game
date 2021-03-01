@@ -52,7 +52,7 @@ known_outcomes = {
         'i': 'm', # Miss Universe isn't from Africa or Europe
         'j': 'm', # LeBron is Tune Squad all-time point leader
         'k': 'm', # < 2000 daily global COVID-19 deaths
-        'l': 'm', # OnlyFans joke on Last Week Tonight
+        'l': 'y', # OnlyFans joke on Last Week Tonight
         'm': 'm', # 2 different Battlebots champions
         'n': 'm', # Americone Dream outsells Chunky Monkey
         'o': 'm', # LiMu emu pecks someone
