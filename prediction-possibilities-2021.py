@@ -49,7 +49,7 @@ known_outcomes = {
         'f': 'm', # Smash Bros. character in Olympic Ceremony
         'g': 'm', # New 007 saves old 007's life
         'h': 'y', # "Lil" Artist has a Top 10 Billboard hit
-        'i': 'm', # Miss Universe isn't from Africa or Europe
+        'i': 'y', # Miss Universe isn't from Africa or Europe
         'j': 'm', # LeBron is Tune Squad all-time point leader
         'k': 'm', # < 2000 daily global COVID-19 deaths
         'l': 'y', # OnlyFans joke on Last Week Tonight
