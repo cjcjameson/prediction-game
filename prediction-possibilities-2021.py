@@ -44,13 +44,13 @@ known_outcomes = {
         'a': 'y', # Democrats gain one or both Senate seats (GA January)
         'b': 'm', # Winds of Winder STILL unpublished
         'c': 'm', # NHL Kings win more than NBA Kings
-        'd': 'm', # "Dugong" is a Jeopardy! answer or clue
+        'd': 'y', # "Dugong" is a Jeopardy! answer or clue
         'e': 'm', # Trump is detained, flees country, or dies
         'f': 'm', # Smash Bros. character in Olympic Ceremony
         'g': 'm', # New 007 saves old 007's life
         'h': 'y', # "Lil" Artist has a Top 10 Billboard hit
         'i': 'y', # Miss Universe isn't from Africa or Europe
-        'j': 'm', # LeBron is Tune Squad all-time point leader
+        'j': 'n', # LeBron is Tune Squad all-time point leader
         'k': 'm', # < 2000 daily global COVID-19 deaths
         'l': 'y', # OnlyFans joke on Last Week Tonight
         'm': 'm', # 2 different Battlebots champions
