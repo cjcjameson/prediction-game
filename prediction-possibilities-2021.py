@@ -46,7 +46,7 @@ known_outcomes = {
         'c': 'm', # NHL Kings win more than NBA Kings
         'd': 'y', # "Dugong" is a Jeopardy! answer or clue
         'e': 'm', # Trump is detained, flees country, or dies
-        'f': 'm', # Smash Bros. character in Olympic Ceremony
+        'f': 'n', # Smash Bros. character in Olympic Ceremony
         'g': 'm', # New 007 saves old 007's life
         'h': 'y', # "Lil" Artist has a Top 10 Billboard hit
         'i': 'y', # Miss Universe isn't from Africa or Europe
