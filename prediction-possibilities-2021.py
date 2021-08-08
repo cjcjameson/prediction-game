@@ -56,7 +56,7 @@ known_outcomes = {
         'm': 'm', # 2 different Battlebots champions
         'n': 'm', # Americone Dream outsells Chunky Monkey
         'o': 'm', # LiMu emu pecks someone
-        'p': 'm', # Axis Powers countries win 111+ medals
+        'p': 'y', # Axis Powers countries win 111+ medals
         'q': 'm', # Someone loses a limb... in an SNL Sketch
         'r': 'm', # Ninja Warrior's stage 3 beaten
         's': 'm', # Sexiest Man Alive is a repeat winner
