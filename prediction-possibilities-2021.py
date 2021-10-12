@@ -47,7 +47,7 @@ known_outcomes = {
         'd': 'y', # "Dugong" is a Jeopardy! answer or clue
         'e': 'm', # Trump is detained, flees country, or dies
         'f': 'n', # Smash Bros. character in Olympic Ceremony
-        'g': 'm', # New 007 saves old 007's life
+        'g': 'n', # New 007 saves old 007's life
         'h': 'y', # "Lil" Artist has a Top 10 Billboard hit
         'i': 'y', # Miss Universe isn't from Africa or Europe
         'j': 'n', # LeBron is Tune Squad all-time point leader
