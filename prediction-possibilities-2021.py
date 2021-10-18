@@ -57,7 +57,7 @@ known_outcomes = {
         'n': 'm', # Americone Dream outsells Chunky Monkey
         'o': 'm', # LiMu emu pecks someone
         'p': 'y', # Axis Powers countries win 111+ medals
-        'q': 'm', # Someone loses a limb... in an SNL Sketch
+        'q': 'y', # Someone loses a limb... in an SNL Sketch
         'r': 'y', # Ninja Warrior's stage 3 beaten
         's': 'm', # Sexiest Man Alive is a repeat winner
         't': 'y', # NASA reaches (Bruno) Mars ('s Twitter following)
