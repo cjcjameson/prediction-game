@@ -51,7 +51,7 @@ known_outcomes = {
         'h': 'y', # "Lil" Artist has a Top 10 Billboard hit
         'i': 'y', # Miss Universe isn't from Africa or Europe
         'j': 'n', # LeBron is Tune Squad all-time point leader
-        'k': 'm', # < 2000 daily global COVID-19 deaths
+        'k': 'y', # < 2000 daily global COVID-19 deaths
         'l': 'y', # OnlyFans joke on Last Week Tonight
         'm': 'm', # 2 different Battlebots champions
         'n': 'm', # Americone Dream outsells Chunky Monkey
