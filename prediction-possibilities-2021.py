@@ -61,7 +61,7 @@ known_outcomes = {
         'r': 'y', # Ninja Warrior's stage 3 beaten
         's': 'n', # Sexiest Man Alive is a repeat winner
         't': 'y', # NASA reaches (Bruno) Mars ('s Twitter following)
-        'u': 'm', # Google Doodle of poodles or noodles
+        'u': 'y', # Google Doodle of poodles or noodles
 }
 
 question_ids=known_outcomes.keys()
