@@ -43,7 +43,7 @@ validate_predictions()
 known_outcomes = {
         'a': 'y', # Democrats gain one or both Senate seats (GA January)
         'b': 'm', # Winds of Winder STILL unpublished
-        'c': 'm', # NHL Kings win more than NBA Kings
+        'c': 'n', # NHL Kings win more than NBA Kings
         'd': 'y', # "Dugong" is a Jeopardy! answer or clue
         'e': 'm', # Trump is detained, flees country, or dies
         'f': 'n', # Smash Bros. character in Olympic Ceremony
