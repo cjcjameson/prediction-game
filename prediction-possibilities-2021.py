@@ -54,7 +54,7 @@ known_outcomes = {
         'k': 'y', # < 2000 daily global COVID-19 deaths
         'l': 'y', # OnlyFans joke on Last Week Tonight
         'm': 'n', # 2 different Battlebots champions
-        'n': 'm', # Americone Dream outsells Chunky Monkey
+        'n': 'y', # Americone Dream outsells Chunky Monkey
         'o': 'm', # LiMu emu pecks someone
         'p': 'y', # Axis Powers countries win 111+ medals
         'q': 'y', # Someone loses a limb... in an SNL Sketch
