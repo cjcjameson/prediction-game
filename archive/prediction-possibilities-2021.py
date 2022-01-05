@@ -42,10 +42,10 @@ validate_predictions()
 
 known_outcomes = {
         'a': 'y', # Democrats gain one or both Senate seats (GA January)
-        'b': 'm', # Winds of Winder STILL unpublished
+        'b': 'y', # Winds of Winder STILL unpublished
         'c': 'n', # NHL Kings win more than NBA Kings
         'd': 'y', # "Dugong" is a Jeopardy! answer or clue
-        'e': 'm', # Trump is detained, flees country, or dies
+        'e': 'n', # Trump is detained, flees country, or dies
         'f': 'n', # Smash Bros. character in Olympic Ceremony
         'g': 'n', # New 007 saves old 007's life
         'h': 'y', # "Lil" Artist has a Top 10 Billboard hit
@@ -55,7 +55,7 @@ known_outcomes = {
         'l': 'y', # OnlyFans joke on Last Week Tonight
         'm': 'n', # 2 different Battlebots champions
         'n': 'y', # Americone Dream outsells Chunky Monkey
-        'o': 'm', # LiMu emu pecks someone
+        'o': 'n', # LiMu emu pecks someone
         'p': 'y', # Axis Powers countries win 111+ medals
         'q': 'y', # Someone loses a limb... in an SNL Sketch
         'r': 'y', # Ninja Warrior's stage 3 beaten
