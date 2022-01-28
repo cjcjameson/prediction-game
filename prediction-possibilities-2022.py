@@ -43,7 +43,7 @@ known_outcomes = {
         'b': 'm', # A Big Brother Wins Big Brother
         'c': 'm', # Knuckles Punches Tails
         'd': 'm', # Multiple Women Win Nobel Prizes
-        'e': 'm', # Word fo the Day Worth 22+ Scrabble Points
+        'e': 'y', # Word fo the Day Worth 22+ Scrabble Points
         'f': 'm', # 40 Wins for NFL Birds
         'g': 'm', # Kumquats in a Chopped Mystery Basket
         'h': 'm', # All 6 "Squad" Members Re-Elected
