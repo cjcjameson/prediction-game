@@ -48,7 +48,7 @@ known_outcomes = {
         'g': 'm', # Kumquats in a Chopped Mystery Basket
         'h': 'm', # All 6 "Squad" Members Re-Elected
         'i': 'm', # LiMu Emu Pecks Someone or a Soccer Ball
-        'j': 'm', # 6 Curling Stone Hits in a Single Throw
+        'j': 'y', # 6 Curling Stone Hits in a Single Throw
         'k': 'm', # NASA's "DART" Gets a "Bullseye"
         'l': 'm', # Game of the Year Title Contains a number
         'm': 'm', # Figure Skater Rotates 9000 degrees
