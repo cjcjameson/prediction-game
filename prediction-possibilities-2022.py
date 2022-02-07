@@ -51,7 +51,7 @@ known_outcomes = {
         'j': 'y', # 6 Curling Stone Hits in a Single Throw
         'k': 'm', # NASA's "DART" Gets a "Bullseye"
         'l': 'm', # Game of the Year Title Contains a number
-        'm': 'm', # Figure Skater Rotates 9000 degrees
+        'm': 'y', # Figure Skater Rotates 9000 degrees
         'n': 'm', # Mid-Air Death in Both Tom Cruise Sequels
         'o': 'm', # Symmetrical Flag Country Wins Eurovision
         'p': 'm', # Doja Cat Raps About Her... "Other" Cat
