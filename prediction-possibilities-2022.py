@@ -54,7 +54,7 @@ known_outcomes = {
         'm': 'y', # Figure Skater Rotates 9000 degrees
         'n': 'm', # Mid-Air Death in Both Tom Cruise Sequels
         'o': 'm', # Symmetrical Flag Country Wins Eurovision
-        'p': 'm', # Doja Cat Raps About Her... "Other" Cat
+        'p': 'y', # Doja Cat Raps About Her... "Other" Cat
         'q': 'm', # Met Gala Outfit has a Giant Flower
         'r': 'm', # Homer Does a Dozen D'Oh!s
         's': 'm', # Ball Nails Goalie  in the Face at World Cup
