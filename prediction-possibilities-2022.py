@@ -55,7 +55,7 @@ known_outcomes = {
         'n': 'm', # Mid-Air Death in Both Tom Cruise Sequels
         'o': 'm', # Symmetrical Flag Country Wins Eurovision
         'p': 'y', # Doja Cat Raps About Her... "Other" Cat
-        'q': 'm', # Met Gala Outfit has a Giant Flower
+        'q': 'y', # Met Gala Outfit has a Giant Flower
         'r': 'm', # Homer Does a Dozen D'Oh!s
         's': 'm', # Ball Nails Goalie  in the Face at World Cup
         't': 'm', # A Bitch Wins the National Dog Show
