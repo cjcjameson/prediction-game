@@ -53,7 +53,7 @@ known_outcomes = {
         'l': 'm', # Game of the Year Title Contains a number
         'm': 'y', # Figure Skater Rotates 9000 degrees
         'n': 'm', # Mid-Air Death in Both Tom Cruise Sequels
-        'o': 'm', # Symmetrical Flag Country Wins Eurovision
+        'o': 'y', # Symmetrical Flag Country Wins Eurovision
         'p': 'y', # Doja Cat Raps About Her... "Other" Cat
         'q': 'y', # Met Gala Outfit has a Giant Flower
         'r': 'm', # Homer Does a Dozen D'Oh!s
