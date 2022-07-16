@@ -59,7 +59,7 @@ known_outcomes = {
         'r': 'm', # Homer Does a Dozen D'Oh!s
         's': 'm', # Ball Nails Goalie  in the Face at World Cup
         't': 'm', # A Bitch Wins the National Dog Show
-        'u': 'm', # Hole-in-1 on "Hole" Hole on Holey Moley
+        'u': 'y', # Hole-in-1 on "Hole" Hole on Holey Moley
         'v': 'm', # Zach King Loses a Child... in a Magic Video
 }
 
