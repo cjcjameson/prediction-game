@@ -40,7 +40,7 @@ validate_predictions()
 
 known_outcomes = {
         'a': 'm', # Zero Instruments on Rolling Stone Covers
-        'b': 'm', # A Big Brother Wins Big Brother
+        'b': 'n', # A Big Brother Wins Big Brother
         'c': 'n', # Knuckles Punches Tails
         'd': 'm', # Multiple Women Win Nobel Prizes
         'e': 'y', # Word fo the Day Worth 22+ Scrabble Points
