@@ -52,7 +52,7 @@ known_outcomes = {
         'k': 'm', # NASA's "DART" Gets a "Bullseye"
         'l': 'm', # Game of the Year Title Contains a number
         'm': 'y', # Figure Skater Rotates 9000 degrees
-        'n': 'm', # Mid-Air Death in Both Tom Cruise Sequels
+        'n': 'n', # Mid-Air Death in Both Tom Cruise Sequels
         'o': 'y', # Symmetrical Flag Country Wins Eurovision
         'p': 'y', # Doja Cat Raps About Her... "Other" Cat
         'q': 'y', # Met Gala Outfit has a Giant Flower
