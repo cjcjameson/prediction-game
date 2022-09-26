@@ -49,7 +49,7 @@ known_outcomes = {
         'h': 'm', # All 6 "Squad" Members Re-Elected
         'i': 'm', # LiMu Emu Pecks Someone or a Soccer Ball
         'j': 'y', # 6 Curling Stone Hits in a Single Throw
-        'k': 'm', # NASA's "DART" Gets a "Bullseye"
+        'k': 'y', # NASA's "DART" Gets a "Bullseye"
         'l': 'm', # Game of the Year Title Contains a number
         'm': 'y', # Figure Skater Rotates 9000 degrees
         'n': 'n', # Mid-Air Death in Both Tom Cruise Sequels
