@@ -46,7 +46,7 @@ known_outcomes = {
         'e': 'y', # Word fo the Day Worth 22+ Scrabble Points
         'f': 'm', # 40 Wins for NFL Birds
         'g': 'm', # Kumquats in a Chopped Mystery Basket
-        'h': 'm', # All 6 "Squad" Members Re-Elected
+        'h': 'y', # All 6 "Squad" Members Re-Elected
         'i': 'm', # LiMu Emu Pecks Someone or a Soccer Ball
         'j': 'y', # 6 Curling Stone Hits in a Single Throw
         'k': 'y', # NASA's "DART" Gets a "Bullseye"
