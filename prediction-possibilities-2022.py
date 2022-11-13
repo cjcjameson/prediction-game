@@ -42,7 +42,7 @@ known_outcomes = {
         'a': 'm', # Zero Instruments on Rolling Stone Covers
         'b': 'n', # A Big Brother Wins Big Brother
         'c': 'n', # Knuckles Punches Tails
-        'd': 'm', # Multiple Women Win Nobel Prizes
+        'd': 'y', # Multiple Women Win Nobel Prizes
         'e': 'y', # Word fo the Day Worth 22+ Scrabble Points
         'f': 'm', # 40 Wins for NFL Birds
         'g': 'm', # Kumquats in a Chopped Mystery Basket
