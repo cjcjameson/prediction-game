@@ -58,7 +58,7 @@ known_outcomes = {
         'q': 'y', # Met Gala Outfit has a Giant Flower
         'r': 'm', # Homer Does a Dozen D'Oh!s
         's': 'm', # Ball Nails Goalie  in the Face at World Cup
-        't': 'm', # A Bitch Wins the National Dog Show
+        't': 'n', # A Bitch Wins the National Dog Show
         'u': 'y', # Hole-in-1 on "Hole" Hole on Holey Moley
         'v': 'm', # Zach King Loses a Child... in a Magic Video
 }
