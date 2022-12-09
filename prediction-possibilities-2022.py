@@ -50,7 +50,7 @@ known_outcomes = {
         'i': 'm', # LiMu Emu Pecks Someone or a Soccer Ball
         'j': 'y', # 6 Curling Stone Hits in a Single Throw
         'k': 'y', # NASA's "DART" Gets a "Bullseye"
-        'l': 'm', # Game of the Year Title Contains a number
+        'l': 'n', # Game of the Year Title Contains a number
         'm': 'y', # Figure Skater Rotates 9000 degrees
         'n': 'n', # Mid-Air Death in Both Tom Cruise Sequels
         'o': 'y', # Symmetrical Flag Country Wins Eurovision
