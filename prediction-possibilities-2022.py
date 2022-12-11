@@ -44,7 +44,7 @@ known_outcomes = {
         'c': 'n', # Knuckles Punches Tails
         'd': 'y', # Multiple Women Win Nobel Prizes
         'e': 'y', # Word fo the Day Worth 22+ Scrabble Points
-        'f': 'm', # 40 Wins for NFL Birds
+        'f': 'y', # 40 Wins for NFL Birds
         'g': 'm', # Kumquats in a Chopped Mystery Basket
         'h': 'y', # All 6 "Squad" Members Re-Elected
         'i': 'm', # LiMu Emu Pecks Someone or a Soccer Ball
