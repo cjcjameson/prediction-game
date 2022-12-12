@@ -56,7 +56,7 @@ known_outcomes = {
         'o': 'y', # Symmetrical Flag Country Wins Eurovision
         'p': 'y', # Doja Cat Raps About Her... "Other" Cat
         'q': 'y', # Met Gala Outfit has a Giant Flower
-        'r': 'm', # Homer Does a Dozen D'Oh!s
+        'r': 'y', # Homer Does a Dozen D'Oh!s
         's': 'm', # Ball Nails Goalie  in the Face at World Cup
         't': 'n', # A Bitch Wins the National Dog Show
         'u': 'y', # Hole-in-1 on "Hole" Hole on Holey Moley
