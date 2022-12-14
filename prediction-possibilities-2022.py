@@ -39,7 +39,7 @@ validate_predictions()
 
 
 known_outcomes = {
-        'a': 'm', # Zero Instruments on Rolling Stone Covers
+        'a': 'y', # Zero Instruments on Rolling Stone Covers
         'b': 'n', # A Big Brother Wins Big Brother
         'c': 'n', # Knuckles Punches Tails
         'd': 'y', # Multiple Women Win Nobel Prizes
