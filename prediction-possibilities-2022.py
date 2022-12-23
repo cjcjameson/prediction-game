@@ -112,9 +112,23 @@ for winner, tally in percentage_wins.items():
     percentage_wins[winner] = float(tally)/float(total_possible)
 ordered_winner_percentages = sorted(percentage_wins.items(), key=lambda x: x[1], reverse=True)
 
+# Question 1b: how many points does each person currently have?
+
+contestant_current_scores = {k:0 for k in predictions}
+contestant_current_scores['tie'] = "n/a"
+for contestant, point_allocations in predictions.items():
+    score = 0
+    for yes_no_maybe, points_allocated in zip(known_outcomes.values(),point_allocations):
+        if yes_no_maybe is "y":
+            score += points_allocated
+    contestant_current_scores[contestant] = score
+
+print(contestant_current_scores.items())
+
 print("percent of win-paths per person")
 for winner, p in ordered_winner_percentages:
-    print(winner, ": ", '{:.1%}'.format(p))
+    score = contestant_current_scores[winner]
+    print(winner, ": ", '{:.1%}'.format(p), " (",score," points )")
 
 # Question 2: which events are most necessary for each person to win?
 
