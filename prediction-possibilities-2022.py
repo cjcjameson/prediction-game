@@ -57,7 +57,7 @@ known_outcomes = {
         'p': 'y', # Doja Cat Raps About Her... "Other" Cat
         'q': 'y', # Met Gala Outfit has a Giant Flower
         'r': 'y', # Homer Does a Dozen D'Oh!s
-        's': 'm', # Ball Nails Goalie  in the Face at World Cup
+        's': 'n', # Ball Nails Goalie  in the Face at World Cup
         't': 'n', # A Bitch Wins the National Dog Show
         'u': 'y', # Hole-in-1 on "Hole" Hole on Holey Moley
         'v': 'm', # Zach King Loses a Child... in a Magic Video
