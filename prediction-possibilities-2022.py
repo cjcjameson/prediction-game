@@ -119,16 +119,14 @@ contestant_current_scores['tie'] = "n/a"
 for contestant, point_allocations in predictions.items():
     score = 0
     for yes_no_maybe, points_allocated in zip(known_outcomes.values(),point_allocations):
-        if yes_no_maybe is "y":
+        if yes_no_maybe == "y":
             score += points_allocated
     contestant_current_scores[contestant] = score
-
-print(contestant_current_scores.items())
 
 print("percent of win-paths per person")
 for winner, p in ordered_winner_percentages:
     score = contestant_current_scores[winner]
-    print(winner, ": ", '{:.1%}'.format(p), " (",score," points )")
+    print(winner, ": ", '{:.1%}'.format(p),'({})'.format(score))
 
 # Question 2: which events are most necessary for each person to win?
 
