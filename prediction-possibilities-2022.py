@@ -45,9 +45,9 @@ known_outcomes = {
         'd': 'y', # Multiple Women Win Nobel Prizes
         'e': 'y', # Word fo the Day Worth 22+ Scrabble Points
         'f': 'y', # 40 Wins for NFL Birds
-        'g': 'm', # Kumquats in a Chopped Mystery Basket
+        'g': 'n', # Kumquats in a Chopped Mystery Basket
         'h': 'y', # All 6 "Squad" Members Re-Elected
-        'i': 'm', # LiMu Emu Pecks Someone or a Soccer Ball
+        'i': 'n', # LiMu Emu Pecks Someone or a Soccer Ball
         'j': 'y', # 6 Curling Stone Hits in a Single Throw
         'k': 'y', # NASA's "DART" Gets a "Bullseye"
         'l': 'n', # Game of the Year Title Contains a number
@@ -60,7 +60,7 @@ known_outcomes = {
         's': 'n', # Ball Nails Goalie  in the Face at World Cup
         't': 'n', # A Bitch Wins the National Dog Show
         'u': 'y', # Hole-in-1 on "Hole" Hole on Holey Moley
-        'v': 'm', # Zach King Loses a Child... in a Magic Video
+        'v': 'n', # Zach King Loses a Child... in a Magic Video
 }
 
 question_ids=known_outcomes.keys()
