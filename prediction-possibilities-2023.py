@@ -56,7 +56,7 @@ known_outcomes = {
         'I': 'm', # Game of the Year Title Contains # or . or ' or : or -
         'J': 'm', # Bob's "Burger of the Day" is a Song Title Pun
         'K': 'm', # Team Ruff Wins Puppy Bowl XIX
-        'L': 'm', # Accidental Swim in Weekly Top r/holdmycosmo Vid
+        'L': 'y', # Accidental Swim in Weekly Top r/holdmycosmo Vid
         'M': 'm', # Blue School Wins College Bowl
         'N': 'm', # Presenter/Performer/Nominee at Tonys is a Tony
         'O': 'm', # 69º at 4:20pm in Nice
