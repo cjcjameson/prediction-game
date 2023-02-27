@@ -67,7 +67,7 @@ known_outcomes = {
         'T': 'm', # Allstate's Mayhem Laughs at his Victim
         'U': 'm', # Florida is the Worst (in a Major League Sports Division)
         'V': 'm', # More People in Space Than This Game
-        'W': 'm', # Winnie the Pooh Out-Murders Cocaine Bear
+        'W': 'y', # Winnie the Pooh Out-Murders Cocaine Bear
 }
 
 question_ids=known_outcomes.keys()
