@@ -54,7 +54,7 @@ known_outcomes = {
         'G': 'm', # DudePerfect Trickshot: 30+ Meters or Seconds
         'H': 'm', # Late Politician Arrives on TIME (Magazine Cover)
         'I': 'm', # Game of the Year Title Contains # or . or ' or : or -
-        'J': 'm', # Bob's "Burger of the Day" is a Song Title Pun
+        'J': 'y', # Bob's "Burger of the Day" is a Song Title Pun
         'K': 'n', # Team Ruff Wins Puppy Bowl XIX
         'L': 'y', # Accidental Swim in Weekly Top r/holdmycosmo Vid
         'M': 'm', # Blue School Wins College Bowl
