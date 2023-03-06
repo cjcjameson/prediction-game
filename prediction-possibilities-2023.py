@@ -52,7 +52,7 @@ known_outcomes = {
         'E': 'y', # Grammy or Grampy Sings at the Grammys
         'F': 'm', # Elemental Name for Elemental "Production Baby"
         'G': 'm', # DudePerfect Trickshot: 30+ Meters or Seconds
-        'H': 'm', # Late Politician Arrives on TIME (Magazine Cover)
+        'H': 'y', # Late Politician Arrives on TIME (Magazine Cover)
         'I': 'm', # Game of the Year Title Contains # or . or ' or : or -
         'J': 'y', # Bob's "Burger of the Day" is a Song Title Pun
         'K': 'n', # Team Ruff Wins Puppy Bowl XIX
