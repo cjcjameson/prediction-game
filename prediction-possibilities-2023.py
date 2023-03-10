@@ -64,7 +64,7 @@ known_outcomes = {
         'Q': 'm', # Only Murders Outside the Building
         'R': 'm', # New Cat or Dog Macy's Thanksgiving Balloon
         'S': 'm', # ORAL is the Answer... in 10 NYT Crosswords
-        'T': 'm', # Allstate's Mayhem Laughs at his Victim
+        'T': 'y', # Allstate's Mayhem Laughs at his Victim
         'U': 'm', # Florida is the Worst (in a Major League Sports Division)
         'V': 'm', # More People in Space Than This Game
         'W': 'y', # Winnie the Pooh Out-Murders Cocaine Bear
