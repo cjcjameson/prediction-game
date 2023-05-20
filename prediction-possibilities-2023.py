@@ -51,7 +51,7 @@ known_outcomes = {
         'D': 'm', # Kumquat or Insect in a Chopped Mystery Basket
         'E': 'y', # Grammy or Grampy Sings at the Grammys
         'F': 'm', # Elemental Name for Elemental "Production Baby"
-        'G': 'm', # DudePerfect Trickshot: 30+ Meters or Seconds
+        'G': 'y', # DudePerfect Trickshot: 30+ Meters or Seconds
         'H': 'y', # Late Politician Arrives on TIME (Magazine Cover)
         'I': 'm', # Game of the Year Title Contains # or . or ' or : or -
         'J': 'y', # Bob's "Burger of the Day" is a Song Title Pun
