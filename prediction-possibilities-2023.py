@@ -45,7 +45,7 @@ validate_predictions()
 
 
 known_outcomes = {
-        'A': 'm', # Survivor Player Loses 12 Challenges or Their Pants
+        'A': 'y', # Survivor Player Loses 12 Challenges or Their Pants
         'B': 'm', # Germany Watches More Porn Than Italy
         'C': 'y', # Joe Rogan 20-Straight Womanless Episodes
         'D': 'm', # Kumquat or Insect in a Chopped Mystery Basket
