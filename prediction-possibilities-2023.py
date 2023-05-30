@@ -66,7 +66,7 @@ known_outcomes = {
         'S': 'm', # ORAL is the Answer... in 10 NYT Crosswords
         'T': 'y', # Allstate's Mayhem Laughs at his Victim
         'U': 'm', # Florida is the Worst (in a Major League Sports Division)
-        'V': 'm', # More People in Space Than This Game
+        'V': 'y', # More People in Space Than This Game
         'W': 'y', # Winnie the Pooh Out-Murders Cocaine Bear
 }
 
