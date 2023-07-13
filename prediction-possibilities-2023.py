@@ -59,7 +59,7 @@ known_outcomes = {
         'K': 'n', # Team Ruff Wins Puppy Bowl XIX
         'L': 'y', # Accidental Swim in Weekly Top r/holdmycosmo Vid
         'M': 'm', # Blue School Wins College Bowl
-        'N': 'm', # Presenter/Performer/Nominee at Tonys is a Tony
+        'N': 'y', # Presenter/Performer/Nominee at Tonys is a Tony
         'O': 'y', # 69º at 4:20pm in Nice
         'P': 'm', # Wimbledon Woman Winner Wasn't Wed
         'Q': 'm', # Only Murders Outside the Building
