@@ -61,7 +61,7 @@ known_outcomes = {
         'M': 'm', # Blue School Wins College Bowl
         'N': 'y', # Presenter/Performer/Nominee at Tonys is a Tony
         'O': 'y', # 69º at 4:20pm in Nice
-        'P': 'm', # Wimbledon Woman Winner Wasn't Wed
+        'P': 'n', # Wimbledon Woman Winner Wasn't Wed
         'Q': 'm', # Only Murders Outside the Building
         'R': 'm', # New Cat or Dog Macy's Thanksgiving Balloon
         'S': 'm', # ORAL is the Answer... in 10 NYT Crosswords
