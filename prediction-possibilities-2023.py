@@ -51,7 +51,7 @@ known_outcomes = {
         'C': 'y', # Joe Rogan 20-Straight Womanless Episodes
         'D': 'y', # Kumquat or Insect in a Chopped Mystery Basket
         'E': 'y', # Grammy or Grampy Sings at the Grammys
-        'F': 'm', # Elemental Name for Elemental "Production Baby"
+        'F': 'y', # Elemental Name for Elemental "Production Baby"
         'G': 'y', # DudePerfect Trickshot: 30+ Meters or Seconds
         'H': 'y', # Late Politician Arrives on TIME (Magazine Cover)
         'I': 'm', # Game of the Year Title Contains # or . or ' or : or -
