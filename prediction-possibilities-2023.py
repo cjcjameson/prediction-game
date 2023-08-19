@@ -64,7 +64,7 @@ known_outcomes = {
         'P': 'n', # Wimbledon Woman Winner Wasn't Wed
         'Q': 'm', # Only Murders Outside the Building
         'R': 'm', # New Cat or Dog Macy's Thanksgiving Balloon
-        'S': 'm', # ORAL is the Answer... in 10 NYT Crosswords
+        'S': 'y', # ORAL is the Answer... in 10 NYT Crosswords
         'T': 'y', # Allstate's Mayhem Laughs at his Victim
         'U': 'm', # Florida is the Worst (in a Major League Sports Division)
         'V': 'y', # More People in Space Than This Game
