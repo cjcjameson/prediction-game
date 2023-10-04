@@ -62,7 +62,7 @@ known_outcomes = {
         'N': 'y', # Presenter/Performer/Nominee at Tonys is a Tony
         'O': 'y', # 69º at 4:20pm in Nice
         'P': 'n', # Wimbledon Woman Winner Wasn't Wed
-        'Q': 'm', # Only Murders Outside the Building
+        'Q': 'n', # Only Murders Outside the Building
         'R': 'm', # New Cat or Dog Macy's Thanksgiving Balloon
         'S': 'y', # ORAL is the Answer... in 10 NYT Crosswords
         'T': 'y', # Allstate's Mayhem Laughs at his Victim
