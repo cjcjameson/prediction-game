@@ -54,7 +54,7 @@ known_outcomes = {
         'F': 'y', # Elemental Name for Elemental "Production Baby"
         'G': 'y', # DudePerfect Trickshot: 30+ Meters or Seconds
         'H': 'y', # Late Politician Arrives on TIME (Magazine Cover)
-        'I': 'm', # Game of the Year Title Contains # or . or ' or : or -
+        'I': 'y', # Game of the Year Title Contains # or . or ' or : or -
         'J': 'y', # Bob's "Burger of the Day" is a Song Title Pun
         'K': 'n', # Team Ruff Wins Puppy Bowl XIX
         'L': 'y', # Accidental Swim in Weekly Top r/holdmycosmo Vid
