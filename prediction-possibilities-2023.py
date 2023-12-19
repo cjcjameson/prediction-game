@@ -58,7 +58,7 @@ known_outcomes = {
         'J': 'y', # Bob's "Burger of the Day" is a Song Title Pun
         'K': 'n', # Team Ruff Wins Puppy Bowl XIX
         'L': 'y', # Accidental Swim in Weekly Top r/holdmycosmo Vid
-        'M': 'm', # Blue School Wins College Bowl
+        'M': 'n', # Blue School Wins College Bowl
         'N': 'y', # Presenter/Performer/Nominee at Tonys is a Tony
         'O': 'y', # 69º at 4:20pm in Nice
         'P': 'n', # Wimbledon Woman Winner Wasn't Wed
