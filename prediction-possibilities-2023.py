@@ -66,7 +66,7 @@ known_outcomes = {
         'R': 'y', # New Cat or Dog Macy's Thanksgiving Balloon
         'S': 'y', # ORAL is the Answer... in 10 NYT Crosswords
         'T': 'y', # Allstate's Mayhem Laughs at his Victim
-        'U': 'm', # Florida is the Worst (in a Major League Sports Division)
+        'U': 'n', # Florida is the Worst (in a Major League Sports Division)
         'V': 'y', # More People in Space Than This Game
         'W': 'y', # Winnie the Pooh Out-Murders Cocaine Bear
 }
