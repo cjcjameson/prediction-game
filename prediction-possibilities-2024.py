@@ -6,15 +6,15 @@ import sys
 import statistics
 
 predictions = {
-        #'x':   [ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X],
+        #'x':           [ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X],
 
         'ZJ👶':         [14,16,13, 5, 7, 3,19,17, 9, 1,12,23,21,18,11, 6, 4,22, 8, 2,24,20,15,10],
         'DI🎲':         [ 2, 8,18,17,19,16, 6, 3,11,13, 9,22,20,15, 4, 7,23, 1,24,12,10,21, 5,14],
-        'YA👨‍🍳': [12,22, 2, 3,21,23,20, 6, 5,10, 4, 8,17,16, 7,13,18,14,11, 9,19,24, 1,15],
-        'RA🎭':         [ 7,20, 6, 5,17,23, 2,21,19,11, 3,12, 1,16, 8, 4,24, 9,22,18,10,15,14,13],
+        'YL👨‍🍳': [12,22, 2, 3,21,23,20, 6, 5,10, 4, 8,17,16, 7,13,18,14,11, 9,19,24, 1,15],
+        'RW🎭':         [ 7,20, 6, 5,17,23, 2,21,19,11, 3,12, 1,16, 8, 4,24, 9,22,18,10,15,14,13],
         'BF🧞‍♀️':  [24,22,23, 9, 3,17,10,16, 2,19,18,11,13, 1, 4, 5,21, 8,14,15, 6,12,20, 7],
-        'AL💃':         [23,15, 9,14,16, 5, 3,10,17,24, 6, 7, 8, 4,11, 2,20, 1,18,13,21,22,19,12],
-        'LI⛈':         [ 5,24, 6,20,16,21,13, 1, 9, 8, 4,10,23,22,15,18,14, 2,12,11, 3,17, 7,19],
+        'AX💃':         [23,15, 9,14,16, 5, 3,10,17,24, 6, 7, 8, 4,11, 2,20, 1,18,13,21,22,19,12],
+        'LL⛈':         [ 5,24, 6,20,16,21,13, 1, 9, 8, 4,10,23,22,15,18,14, 2,12,11, 3,17, 7,19],
         'NA👺':         [13,18,20,19, 2,21,22,23,14,17,16, 5,12,15, 4, 8, 7, 9, 6, 3,11,24,10, 1],
         'IV🦄':         [ 6,18,16,20,13,24,19,15, 9,14, 5, 7,21,12,10,22,17, 1, 8, 2, 4,23,11, 3],
         'MA🥃':         [19,14, 9, 5,18,23,10,15, 8,12,24,16, 7,17,13, 4,22, 3, 2,21,20, 6,11, 1],
@@ -26,8 +26,8 @@ predictions = {
         'PS🛸':         [ 5,23,21,22, 6,24, 4,20,11,10, 9,18,19,17, 8, 2, 7,15, 1,14,16,13,12, 3],
         'AX🪅':         [ 9,17,18,21, 4,20,23, 2,11,22, 6, 7,19,15,10, 8,16,14, 5, 1,12,24,13, 3],
 
-        # MM: TBD
-        # 'MM': [ 6,16,12,15,21, 7, 9,17,10,22, 3,11, 4, 2,23,18, 1, 5,13,19,14,20, 8],
+        # MM: FVPMQCNDHGETWLUJIOKASXPR
+        'MM':           [ 5,22,19,17,14,24,15,16, 8, 9, 6,11,21,18, 7, 2,20, 1, 4,13,10,23,12, 3],
         }
 
 # validate predictions
@@ -129,7 +129,7 @@ for contestant, point_allocations in predictions.items():
             score += points_allocated
     contestant_current_scores[contestant] = score
 
-print("percent of win-paths per person")
+print("percent of win-paths per person (score so far in parentheses)")
 for winner, p in ordered_winner_percentages:
     score = contestant_current_scores[winner]
     print(winner, ": ", '{:.1%}'.format(p),'({})'.format(score))
@@ -253,7 +253,11 @@ def mean_difference_analysis():
     print(questions_medians_sorted)
 
     # what would the mean prediction order be? mostly driven by the mean, with some influence from median
-    mm_prediction = [21,19, 3, 1, 4,17,13,18,20,16,11,15, 6,14, 5,10, 9, 7, 2,12, 8]
+    mm_prediction = predictions.get('MM')
+
+    if mm_prediction is None:
+        print("skipping mean error analysis")
+        return
 
     mean_absolute_error_by_person = {}
     for person, prediction in predictions.items():
