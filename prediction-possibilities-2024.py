@@ -64,7 +64,7 @@ known_outcomes = {
         'S': 'm', # Tuba in Tiny Desk
         'T': 'm', # Israel Less Popular
         'U': 'm', # Vegas Sphere Glitch
-        'V': 'm', # Hell Michigan Freezes
+        'V': 'y', # Hell Michigan Freezes
         'W': 'm', # Squid Game Winner is Odd
         'X': 'm', # 40 Cocomelon Thumbnails don't show JJ
 }
