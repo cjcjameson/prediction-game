@@ -50,7 +50,7 @@ known_outcomes = {
         'E': 'm', # Wicked Trailer 2x Gravity Defiances
         'F': 'm', # Taylor Swift Eras Tour more than any Movie
         'G': 'm', # Winnie The Pooh kills 10+
-        'H': 'm', # Succession not Successful
+        'H': 'y', # Succession not Successful
         'I': 'm', # Amazing Race Boat Capsizes
         'J': 'm', # Groundhogs Agree
         'K': 'm', # Ukraine Wins
