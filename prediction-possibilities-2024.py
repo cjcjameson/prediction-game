@@ -62,7 +62,7 @@ known_outcomes = {
         'Q': 'm', # Foreign Lanugage in Oscars Acceptance Speech
         'R': 'm', # Dragons Drop or Dragon Droppings
         'S': 'm', # Tuba in Tiny Desk
-        'T': 'm', # Israel Less Popular
+        'T': 'm', # Israel More Popular
         'U': 'm', # Vegas Sphere Glitch
         'V': 'y', # Hell Michigan Freezes
         'W': 'm', # Squid Game Winner is Odd
