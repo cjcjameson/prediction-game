@@ -47,12 +47,12 @@ known_outcomes = {
         'B': 'm', # 3 Backflips in Breakdancing
         'C': 'm', # Spelling Bee No-B
         'D': 'm', # Only Murders In and Around Building
-        'E': 'm', # Wicked Trailer 2x Gravity Defiances
+        'E': 'y', # Wicked Trailer 2x Gravity Defiances
         'F': 'm', # Taylor Swift Eras Tour more than any Movie
         'G': 'm', # Winnie The Pooh kills 10+
         'H': 'y', # Succession not Successful
         'I': 'm', # Amazing Race Boat Capsizes
-        'J': 'm', # Groundhogs Agree
+        'J': 'y', # Groundhogs Agree
         'K': 'm', # Ukraine Wins
         'L': 'm', # Food Flies in Flugtag
         'M': 'm', # Star Wars Outlaws features Jabba or Jawas
