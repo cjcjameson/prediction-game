@@ -59,7 +59,7 @@ known_outcomes = {
         'N': 'm', # Buffalo Buffalo Buffalos
         'O': 'm', # WSOP Heartless Winner
         'P': 'm', # No Perfection in Beat Shazam!
-        'Q': 'm', # Foreign Lanugage in Oscars Acceptance Speech
+        'Q': 'y', # Foreign Lanugage in Oscars Acceptance Speech
         'R': 'm', # Dragons Drop or Dragon Droppings
         'S': 'm', # Tuba in Tiny Desk
         'T': 'm', # Israel More Popular
