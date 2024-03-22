@@ -56,7 +56,7 @@ known_outcomes = {
         'K': 'm', # Ukraine Wins
         'L': 'm', # Food Flies in Flugtag
         'M': 'm', # Star Wars Outlaws features Jabba or Jawas
-        'N': 'm', # Buffalo Buffalo Buffalos
+        'N': 'y', # Buffalo Buffalo Buffalos
         'O': 'm', # WSOP Heartless Winner
         'P': 'm', # No Perfection in Beat Shazam!
         'Q': 'y', # Foreign Lanugage in Oscars Acceptance Speech
