@@ -51,7 +51,7 @@ known_outcomes = {
         'F': 'm', # Taylor Swift Eras Tour more than any Movie
         'G': 'y', # Winnie The Pooh kills 10+
         'H': 'y', # Succession not Successful
-        'I': 'm', # Amazing Race Boat Capsizes
+        'I': 'y', # Amazing Race Boat Capsizes
         'J': 'y', # Groundhogs Agree
         'K': 'm', # Ukraine Wins
         'L': 'm', # Food Flies in Flugtag
@@ -62,7 +62,7 @@ known_outcomes = {
         'Q': 'y', # Foreign Lanugage in Oscars Acceptance Speech
         'R': 'm', # Dragons Drop or Dragon Droppings
         'S': 'm', # Tuba in Tiny Desk
-        'T': 'm', # Israel More Popular
+        'T': 'y', # Israel More Popular
         'U': 'm', # Vegas Sphere Glitch
         'V': 'y', # Hell Michigan Freezes
         'W': 'm', # Squid Game Winner is Odd
