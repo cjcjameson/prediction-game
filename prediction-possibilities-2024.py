@@ -60,7 +60,7 @@ known_outcomes = {
         'O': 'm', # WSOP Heartless Winner
         'P': 'm', # No Perfection in Beat Shazam!
         'Q': 'y', # Foreign Lanugage in Oscars Acceptance Speech
-        'R': 'm', # Dragons Drop or Dragon Droppings
+        'R': 'y', # Dragons Drop or Dragon Droppings
         'S': 'm', # Tuba in Tiny Desk
         'T': 'y', # Israel More Popular
         'U': 'm', # Vegas Sphere Glitch
