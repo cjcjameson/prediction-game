@@ -63,7 +63,7 @@ known_outcomes = {
         'R': 'y', # Dragons Drop or Dragon Droppings
         'S': 'm', # Tuba in Tiny Desk
         'T': 'y', # Israel More Popular
-        'U': 'm', # Vegas Sphere Glitch
+        'U': 'y', # Vegas Sphere Glitch
         'V': 'y', # Hell Michigan Freezes
         'W': 'm', # Squid Game Winner is Odd
         'X': 'm', # 40 Cocomelon Thumbnails don't show JJ
