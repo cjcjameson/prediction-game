@@ -54,10 +54,10 @@ known_outcomes = {
         'I': 'y', # Amazing Race Boat Capsizes
         'J': 'y', # Groundhogs Agree
         'K': 'm', # Ukraine Wins
-        'L': 'm', # Food Flies in Flugtag
+        'L': 'y', # Food Flies in Flugtag
         'M': 'm', # Star Wars Outlaws features Jabba or Jawas
         'N': 'y', # Buffalo Buffalo Buffalos
-        'O': 'm', # WSOP Heartless Winner
+        'O': 'y', # WSOP Heartless Winner
         'P': 'm', # No Perfection in Beat Shazam!
         'Q': 'y', # Foreign Lanugage in Oscars Acceptance Speech
         'R': 'y', # Dragons Drop or Dragon Droppings
