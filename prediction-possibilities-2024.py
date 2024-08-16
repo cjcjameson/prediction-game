@@ -44,7 +44,7 @@ validate_predictions()
 
 known_outcomes = {
         'A': 'm', # 3 States Flip
-        'B': 'm', # 3 Backflips in Breakdancing
+        'B': 'y', # 3 Backflips in Breakdancing
         'C': 'n', # Spelling Bee No-B
         'D': 'm', # Only Murders In and Around Building
         'E': 'y', # Wicked Trailer 2x Gravity Defiances
