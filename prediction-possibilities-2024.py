@@ -53,7 +53,7 @@ known_outcomes = {
         'H': 'y', # Succession not Successful
         'I': 'y', # Amazing Race Boat Capsizes
         'J': 'y', # Groundhogs Agree
-        'K': 'm', # Ukraine Wins
+        'K': 'y', # Ukraine Wins
         'L': 'y', # Food Flies in Flugtag
         'M': 'm', # Star Wars Outlaws features Jabba or Jawas
         'N': 'y', # Buffalo Buffalo Buffalos
