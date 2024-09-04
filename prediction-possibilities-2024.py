@@ -55,7 +55,7 @@ known_outcomes = {
         'J': 'y', # Groundhogs Agree
         'K': 'y', # Ukraine Wins
         'L': 'y', # Food Flies in Flugtag
-        'M': 'm', # Star Wars Outlaws features Jabba or Jawas
+        'M': 'y', # Star Wars Outlaws features Jabba or Jawas
         'N': 'y', # Buffalo Buffalo Buffalos
         'O': 'y', # WSOP Heartless Winner
         'P': 'm', # No Perfection in Beat Shazam!
