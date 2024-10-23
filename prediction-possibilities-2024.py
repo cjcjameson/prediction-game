@@ -46,7 +46,7 @@ known_outcomes = {
         'A': 'm', # 3 States Flip
         'B': 'y', # 3 Backflips in Breakdancing
         'C': 'n', # Spelling Bee No-B
-        'D': 'm', # Only Murders In and Around Building
+        'D': 'n', # Only Murders In and Around Building
         'E': 'y', # Wicked Trailer 2x Gravity Defiances
         'F': 'm', # Taylor Swift Eras Tour more than any Movie
         'G': 'y', # Winnie The Pooh kills 10+
