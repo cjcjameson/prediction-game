@@ -43,7 +43,7 @@ validate_predictions()
 
 
 known_outcomes = {
-        'A': 'm', # 3 States Flip
+        'A': 'y', # 3 States Flip
         'B': 'y', # 3 Backflips in Breakdancing
         'C': 'n', # Spelling Bee No-B
         'D': 'n', # Only Murders In and Around Building
