@@ -58,7 +58,7 @@ known_outcomes = {
         'M': 'y', # Star Wars Outlaws features Jabba or Jawas
         'N': 'y', # Buffalo Buffalo Buffalos
         'O': 'y', # WSOP Heartless Winner
-        'P': 'm', # No Perfection in Beat Shazam!
+        'P': 'y', # No Perfection in Beat Shazam!
         'Q': 'y', # Foreign Lanugage in Oscars Acceptance Speech
         'R': 'y', # Dragons Drop or Dragon Droppings
         'S': 'm', # Tuba in Tiny Desk
