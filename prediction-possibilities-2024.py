@@ -48,7 +48,7 @@ known_outcomes = {
         'C': 'n', # Spelling Bee No-B
         'D': 'n', # Only Murders In and Around Building
         'E': 'y', # Wicked Trailer 2x Gravity Defiances
-        'F': 'm', # Taylor Swift Eras Tour more than any Movie
+        'F': 'y', # Taylor Swift Eras Tour more than any Movie
         'G': 'y', # Winnie The Pooh kills 10+
         'H': 'y', # Succession not Successful
         'I': 'y', # Amazing Race Boat Capsizes
@@ -61,12 +61,12 @@ known_outcomes = {
         'P': 'y', # No Perfection in Beat Shazam!
         'Q': 'y', # Foreign Lanugage in Oscars Acceptance Speech
         'R': 'y', # Dragons Drop or Dragon Droppings
-        'S': 'm', # Tuba in Tiny Desk
+        'S': 'n', # Tuba in Tiny Desk
         'T': 'y', # Israel More Popular
         'U': 'y', # Vegas Sphere Glitch
         'V': 'y', # Hell Michigan Freezes
-        'W': 'm', # Squid Game Winner is Odd
-        'X': 'm', # 40 Cocomelon Thumbnails don't show JJ
+        'W': 'n', # Squid Game Winner is Odd
+        'X': 'y', # 40 Cocomelon Thumbnails don't show JJ
 }
 
 question_ids=known_outcomes.keys()
