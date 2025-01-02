@@ -4,6 +4,8 @@ import collections
 import os
 import sys
 import statistics
+import multiprocessing as mp
+from functools import partial
 
 predictions = {
         #'x':           [ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y],
@@ -77,29 +79,32 @@ question_ids=known_outcomes.keys()
 
 
 # returns a dictionary of outcome sequences and winners
-def winners(outcomes):
-    if 'm' not in outcomes:
-        points_per_prediction = {k: points(v, outcomes) for k, v in predictions.items()}
+def winners_optimized(outcomes, start, end):
+    results = {}
+    for i in range(start, end):
+        binary = format(i, f'0{len(outcomes)}b')
+        current_outcome = ''.join('y' if b == '1' else 'n' for b in binary)
+        
+        points_per_prediction = {k: points(v, current_outcome) for k, v in predictions.items()}
         max_points = max(points_per_prediction.values())
-        possible_winners = []
-        for predictor, persons_points in points_per_prediction.items():
-            if persons_points==max_points:
-                possible_winners.append(predictor)
-        if len(possible_winners)==1:
-            return {''.join(outcomes): possible_winners[0]}
-        else:
-            return {''.join(outcomes): 'tie'}
-    else:
-        first_maybe = outcomes.index('m')
-        its_a_yes = list(outcomes)
-        its_a_yes[first_maybe]='y'
-        yes_outcomes = winners(its_a_yes)
+        possible_winners = [predictor for predictor, points in points_per_prediction.items() if points == max_points]
+        
+        winner = possible_winners[0] if len(possible_winners) == 1 else 'tie'
+        results[current_outcome] = winner
+    
+    return results
 
-        its_a_no = list(outcomes)
-        its_a_no[first_maybe]='n'
-        no_outcomes = winners(its_a_no)
-
-        return {**yes_outcomes, **no_outcomes}
+def parallel_winners(outcomes):
+    num_cores = mp.cpu_count()
+    total_combinations = 2 ** len(outcomes)
+    chunk_size = total_combinations // num_cores
+    
+    with mp.Pool(num_cores) as pool:
+        partial_winners = partial(winners_optimized, outcomes)
+        ranges = [(i * chunk_size, min((i + 1) * chunk_size, total_combinations)) for i in range(num_cores)]
+        results = pool.starmap(partial_winners, ranges)
+    
+    return {k: v for result in results for k, v in result.items()}
 
 def points(rankings, outcomes):
     total = 0
@@ -111,168 +116,169 @@ def points(rankings, outcomes):
 winner_tally = {k:0 for k in predictions}
 winner_tally['tie']=0
 
-each_win = winners(list(known_outcomes.values()))
-total_possible = len(each_win)
+if __name__ == '__main__':
+    each_win = parallel_winners(list(known_outcomes.values()))
+    total_possible = len(each_win)
 
-# Question 1: how many total possible win paths per person?
-for w in each_win.values():
-    winner_tally[w] += 1
-percentage_wins = winner_tally.copy()
-for winner, tally in percentage_wins.items():
-    percentage_wins[winner] = float(tally)/float(total_possible)
-ordered_winner_percentages = sorted(percentage_wins.items(), key=lambda x: x[1], reverse=True)
+    # Question 1: how many total possible win paths per person?
+    for w in each_win.values():
+        winner_tally[w] += 1
+    percentage_wins = winner_tally.copy()
+    for winner, tally in percentage_wins.items():
+        percentage_wins[winner] = float(tally)/float(total_possible)
+    ordered_winner_percentages = sorted(percentage_wins.items(), key=lambda x: x[1], reverse=True)
 
-# Question 1b: how many points does each person currently have?
+    # Question 1b: how many points does each person currently have?
 
-contestant_current_scores = {k:0 for k in predictions}
-contestant_current_scores['tie'] = "n/a"
-for contestant, point_allocations in predictions.items():
-    score = 0
-    for yes_no_maybe, points_allocated in zip(known_outcomes.values(),point_allocations):
-        if yes_no_maybe == "y":
-            score += points_allocated
-    contestant_current_scores[contestant] = score
+    contestant_current_scores = {k:0 for k in predictions}
+    contestant_current_scores['tie'] = "n/a"
+    for contestant, point_allocations in predictions.items():
+        score = 0
+        for yes_no_maybe, points_allocated in zip(known_outcomes.values(),point_allocations):
+            if yes_no_maybe == "y":
+                score += points_allocated
+        contestant_current_scores[contestant] = score
 
-print("percent of win-paths per person (score so far in parentheses)")
-for winner, p in ordered_winner_percentages:
-    score = contestant_current_scores[winner]
-    print(winner, ": ", '{:.1%}'.format(p),'({})'.format(score))
+    print("percent of win-paths per person (score so far in parentheses)")
+    for winner, p in ordered_winner_percentages:
+        score = contestant_current_scores[winner]
+        print(winner, ": ", '{:.1%}'.format(p),'({})'.format(score))
 
-# Question 2: which events are most necessary for each person to win?
+    # Question 2: which events are most necessary for each person to win?
 
-def new_empty_yn_bucket():
-    return {'y': 0, 'n': 0}
-def new_each_question_empty_yn_buckets():
-    return {k: new_empty_yn_bucket() for k in question_ids}
-# people have each event, and each event has a count of wins when it was true, and when it was false
-each_person_with_question_buckets = {k[0]: new_each_question_empty_yn_buckets() for k in ordered_winner_percentages}
+    def new_empty_yn_bucket():
+        return {'y': 0, 'n': 0}
+    def new_each_question_empty_yn_buckets():
+        return {k: new_empty_yn_bucket() for k in question_ids}
+    # people have each event, and each event has a count of wins when it was true, and when it was false
+    each_person_with_question_buckets = {k[0]: new_each_question_empty_yn_buckets() for k in ordered_winner_percentages}
 
-for events, winner in each_win.items():
-    for idx, question_id in enumerate(question_ids):
-        event_outcome = events[idx]
-        each_person_with_question_buckets[winner][question_id][event_outcome]+=1
+    for events, winner in each_win.items():
+        for idx, question_id in enumerate(question_ids):
+            event_outcome = events[idx]
+            each_person_with_question_buckets[winner][question_id][event_outcome]+=1
 
-import copy
-only_people_with_win_paths = copy.deepcopy(each_person_with_question_buckets)
-for person, questions in each_person_with_question_buckets.items():
-    if winner_tally[person] == 0:
-        del only_people_with_win_paths[person]
+    import copy
+    only_people_with_win_paths = copy.deepcopy(each_person_with_question_buckets)
+    for person, questions in each_person_with_question_buckets.items():
+        if winner_tally[person] == 0:
+            del only_people_with_win_paths[person]
 
-each_person_only_maybe_questions = copy.deepcopy(only_people_with_win_paths)
-for person, questions in only_people_with_win_paths.items():
-    for question in questions:
-        if known_outcomes[question] != 'm':
-            del each_person_only_maybe_questions[person][question]
+    each_person_only_maybe_questions = copy.deepcopy(only_people_with_win_paths)
+    for person, questions in only_people_with_win_paths.items():
+        for question in questions:
+            if known_outcomes[question] != 'm':
+                del each_person_only_maybe_questions[person][question]
 
-each_person_question_percentage = copy.deepcopy(each_person_only_maybe_questions)
-for person, questions in each_person_only_maybe_questions.items():
-    for question in questions:
-        raw_percentage = questions[question]['y'] / (questions[question]['y'] + questions[question]['n'])
-        each_person_question_percentage[person][question] = raw_percentage
+    each_person_question_percentage = copy.deepcopy(each_person_only_maybe_questions)
+    for person, questions in each_person_only_maybe_questions.items():
+        for question in questions:
+            raw_percentage = questions[question]['y'] / (questions[question]['y'] + questions[question]['n'])
+            each_person_question_percentage[person][question] = raw_percentage
 
-for person, questions in each_person_question_percentage.items():
-    print("Contestant " + person + " has " + str(winner_tally[person]) + " ways to win, and needs the following to happen (high percentages) or not (low percentages)")
+    for person, questions in each_person_question_percentage.items():
+        print("Contestant " + person + " has " + str(winner_tally[person]) + " ways to win, and needs the following to happen (high percentages) or not (low percentages)")
 
-    ordered_qs_by_need_percent = sorted(questions.items(), key=lambda x: x[1], reverse=True)
+        ordered_qs_by_need_percent = sorted(questions.items(), key=lambda x: x[1], reverse=True)
 
-    if os.environ.get('FULL_GUTS'):
-        print(questions)
+        if os.environ.get('FULL_GUTS'):
+            print(questions)
 
                                 # unpack the tuple
-    print('\t{}: {:.1%}'.format(*ordered_qs_by_need_percent[0]))
-    print('\t{}: {:.1%}'.format(*ordered_qs_by_need_percent[-1]))
+        print('\t{}: {:.1%}'.format(*ordered_qs_by_need_percent[0]))
+        print('\t{}: {:.1%}'.format(*ordered_qs_by_need_percent[-1]))
 
-# Question 3: for each maybe-question, what happens?
-print("Question 3: for each maybe-question, what happens?")
+    # Question 3: for each maybe-question, what happens?
+    print("Question 3: for each maybe-question, what happens?")
 
-maybe_question_need_by_person = {}
+    maybe_question_need_by_person = {}
 
-for question, outcome in known_outcomes.items():
-    if outcome == 'm':
-        maybe_question_need_by_person[question] = {}
+    for question, outcome in known_outcomes.items():
+        if outcome == 'm':
+            maybe_question_need_by_person[question] = {}
 
-for person, questions in each_person_question_percentage.items():
-    for question, percentage in questions.items():
-        maybe_question_need_by_person[question][person] = percentage
+    for person, questions in each_person_question_percentage.items():
+        for question, percentage in questions.items():
+            maybe_question_need_by_person[question][person] = percentage
 
-for question, person_percentages in maybe_question_need_by_person.items():
-    print("Question " + question + " coming TRUE will help (high percentages) or hurt (low percentages) these people")
+    for question, person_percentages in maybe_question_need_by_person.items():
+        print("Question " + question + " coming TRUE will help (high percentages) or hurt (low percentages) these people")
 
-    ordered_people_by_need_percent = sorted(person_percentages.items(), key=lambda x: x[1], reverse=True)
+        ordered_people_by_need_percent = sorted(person_percentages.items(), key=lambda x: x[1], reverse=True)
 
-    for person_need_percent in ordered_people_by_need_percent:
-        print('\t{}: {:.1%}'.format(*person_need_percent))
+        for person_need_percent in ordered_people_by_need_percent:
+            print('\t{}: {:.1%}'.format(*person_need_percent))
 
-# Question 4: who wins, organized by how many "yes" outcomes
-print("Question 4: who wins, organized by how many more 'yes' outcomes")
+    # Question 4: who wins, organized by how many "yes" outcomes
+    print("Question 4: who wins, organized by how many more 'yes' outcomes")
 
-maybes_count = sum(1 for outcome in known_outcomes.values() if outcome == "m")
-yesses_already_count = sum(1 for outcome in known_outcomes.values() if outcome == "y")
+    maybes_count = sum(1 for outcome in known_outcomes.values() if outcome == "m")
+    yesses_already_count = sum(1 for outcome in known_outcomes.values() if outcome == "y")
 
-# def new_tally_by_guesser():
-#    return {"tie": 0}
+    # def new_tally_by_guesser():
+    #    return {"tie": 0}
 
-how_many_more_yes_buckets = {k:{} for k in range(maybes_count+1)}
+    how_many_more_yes_buckets = {k:{} for k in range(maybes_count+1)}
 
-for outcome, winner in each_win.items():
-    how_many_more_yes = outcome.count("y") - yesses_already_count
-    if not winner in how_many_more_yes_buckets[how_many_more_yes]:
-        how_many_more_yes_buckets[how_many_more_yes][winner] = 1
-    else:
-        how_many_more_yes_buckets[how_many_more_yes][winner] += 1
+    for outcome, winner in each_win.items():
+        how_many_more_yes = outcome.count("y") - yesses_already_count
+        if not winner in how_many_more_yes_buckets[how_many_more_yes]:
+            how_many_more_yes_buckets[how_many_more_yes][winner] = 1
+        else:
+            how_many_more_yes_buckets[how_many_more_yes][winner] += 1
 
-for how_many_more_yes_bucket, person_counts in how_many_more_yes_buckets.items():
-    print("If there are " + str(how_many_more_yes_bucket) + " more yesses, then these people have win-paths:")
+    for how_many_more_yes_bucket, person_counts in how_many_more_yes_buckets.items():
+        print("If there are " + str(how_many_more_yes_bucket) + " more yesses, then these people have win-paths:")
 
-    ordered_people_by_count = sorted(person_counts.items(), key=lambda x: x[1], reverse=True)
+        ordered_people_by_count = sorted(person_counts.items(), key=lambda x: x[1], reverse=True)
 
-    for person_count in ordered_people_by_count:
-        print('\t{}: {}'.format(*person_count))
+        for person_count in ordered_people_by_count:
+            print('\t{}: {}'.format(*person_count))
 
 
-# do people have more win-paths because they're just guessing differently than the wisdom of the crowds?
-# Or does someone have reasonable guesses, and also a clear opportunity?
-def mean_difference_analysis():
+    # do people have more win-paths because they're just guessing differently than the wisdom of the crowds?
+    # Or does someone have reasonable guesses, and also a clear opportunity?
+    def mean_difference_analysis():
 
-    questions_values = {}
+        questions_values = {}
 
-    for index, question in enumerate(question_ids):
-        this_question_values = []
-        for prediction_list in predictions.values():
-            this_question_values.append(prediction_list[index])
+        for index, question in enumerate(question_ids):
+            this_question_values = []
+            for prediction_list in predictions.values():
+                this_question_values.append(prediction_list[index])
 
-        questions_values[question] = this_question_values
+            questions_values[question] = this_question_values
 
-    questions_means = {q:statistics.mean(values) for (q,values) in questions_values.items()}
-    questions_means_sorted = dict(sorted(questions_means.items(), key=lambda item: item[1], reverse=True))
-    questions_means_sorted_rounded = {q:round(mean,1) for (q,mean) in questions_means_sorted.items()}
-    print()
-    print("mean question ranking")
-    print(questions_means_sorted_rounded)
+        questions_means = {q:statistics.mean(values) for (q,values) in questions_values.items()}
+        questions_means_sorted = dict(sorted(questions_means.items(), key=lambda item: item[1], reverse=True))
+        questions_means_sorted_rounded = {q:round(mean,1) for (q,mean) in questions_means_sorted.items()}
+        print()
+        print("mean question ranking")
+        print(questions_means_sorted_rounded)
 
-    questions_medians = {q:statistics.median(values) for (q,values) in questions_values.items()}
-    questions_medians_sorted = dict(sorted(questions_medians.items(), key=lambda item: item[1], reverse=True))
-    print()
-    print("median question ranking")
-    print(questions_medians_sorted)
+        questions_medians = {q:statistics.median(values) for (q,values) in questions_values.items()}
+        questions_medians_sorted = dict(sorted(questions_medians.items(), key=lambda item: item[1], reverse=True))
+        print()
+        print("median question ranking")
+        print(questions_medians_sorted)
 
-    # what would the mean prediction order be? mostly driven by the mean, with some influence from median
-    mm_prediction = predictions.get('MM')
+        # what would the mean prediction order be? mostly driven by the mean, with some influence from median
+        mm_prediction = predictions.get('MM')
 
-    if mm_prediction is None:
-        print("skipping mean error analysis")
-        return
+        if mm_prediction is None:
+            print("skipping mean error analysis")
+            return
 
-    mean_absolute_error_by_person = {}
-    for person, prediction in predictions.items():
-        absolute_errors = []
-        for p1, p2 in zip(prediction, mm_prediction):
-            absolute_errors.append(abs(p1-p2))
-        mean_absolute_error_by_person[person] = round(statistics.mean(absolute_errors),2)
+        mean_absolute_error_by_person = {}
+        for person, prediction in predictions.items():
+            absolute_errors = []
+            for p1, p2 in zip(prediction, mm_prediction):
+                absolute_errors.append(abs(p1-p2))
+            mean_absolute_error_by_person[person] = round(statistics.mean(absolute_errors),2)
 
-    mae_sorted = dict(sorted(mean_absolute_error_by_person.items(), key=lambda item: item[1], reverse=True))
-    print()
-    print("mean absolute error from the collective mean prediction")
-    print(mae_sorted)
+        mae_sorted = dict(sorted(mean_absolute_error_by_person.items(), key=lambda item: item[1], reverse=True))
+        print()
+        print("mean absolute error from the collective mean prediction")
+        print(mae_sorted)
 
-mean_difference_analysis()
+    mean_difference_analysis()
