@@ -7,9 +7,9 @@ import statistics
 import multiprocessing as mp
 from functools import partial
 
+# fmt: off
 predictions = {
         #'x':           [ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y],
-
 
         'SOPH🦈':         [ 5,18,24, 7, 2,23,21,16, 9,20, 3,14, 1,22, 4,19, 6,17, 8,25,10,15,11,13,12],
         'ALIZ🦎':         [20,21,22,23,17,24, 2,18, 1, 8, 6, 5,25,16,12,13, 7,15, 4,14,11,10, 3,19, 9],
@@ -34,6 +34,8 @@ predictions = {
         # MM: TBD
         # 'MM':         [ 5,22,19,17,14,24,15,16, 8, 9, 6,11,21,18, 7, 2,20, 1, 4,13,10,23,12, 3],
         }
+# fmt: on
+
 
 # validate predictions
 def validate_predictions():
