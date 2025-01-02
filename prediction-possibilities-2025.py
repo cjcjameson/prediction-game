@@ -4,6 +4,19 @@ import collections
 import os
 import sys
 import statistics
+import functools
+
+# Global memoization cache
+memo_cache = {}
+
+def memoize(func):
+    @functools.wraps(func)
+    def wrapper(*args):
+        key = ''.join(args[0])  # Convert the outcomes list to a string for hashing
+        if key not in memo_cache:
+            memo_cache[key] = func(*args)
+        return memo_cache[key]
+    return wrapper
 
 predictions = {
         #'x':           [ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y],
@@ -77,18 +90,14 @@ question_ids=known_outcomes.keys()
 
 
 # returns a dictionary of outcome sequences and winners
+@memoize
 def winners(outcomes):
     if 'm' not in outcomes:
         points_per_prediction = {k: points(v, outcomes) for k, v in predictions.items()}
         max_points = max(points_per_prediction.values())
-        possible_winners = []
-        for predictor, persons_points in points_per_prediction.items():
-            if persons_points==max_points:
-                possible_winners.append(predictor)
-        if len(possible_winners)==1:
-            return {''.join(outcomes): possible_winners[0]}
-        else:
-            return {''.join(outcomes): 'tie'}
+        possible_winners = [predictor for predictor, persons_points in points_per_prediction.items() if persons_points == max_points]
+        winner = possible_winners[0] if len(possible_winners) == 1 else 'tie'
+        return {''.join(outcomes): winner}
     else:
         first_maybe = outcomes.index('m')
         its_a_yes = list(outcomes)
@@ -111,6 +120,13 @@ def points(rankings, outcomes):
 winner_tally = {k:0 for k in predictions}
 winner_tally['tie']=0
 
+# Clear the cache before starting a new calculation
+def clear_memo_cache():
+    global memo_cache
+    memo_cache.clear()
+
+# Use the memoized function in your main logic
+clear_memo_cache()
 each_win = winners(list(known_outcomes.values()))
 total_possible = len(each_win)
 
