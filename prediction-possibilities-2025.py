@@ -9,7 +9,7 @@ from functools import partial
 
 # fmt: off
 predictions = {
-        #'x':           [ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y],
+        #'x':             [ A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y],
 
         'SOPH🦈':         [ 5,18,24, 7, 2,23,21,16, 9,20, 3,14, 1,22, 4,19, 6,17, 8,25,10,15,11,13,12],
         'ALIZ🦎':         [20,21,22,23,17,24, 2,18, 1, 8, 6, 5,25,16,12,13, 7,15, 4,14,11,10, 3,19, 9],
@@ -67,7 +67,7 @@ known_outcomes = {
     "O": "m",  # Yodel Guy falls to death on Price is Right
     "P": "m",  # Luigi + Diddy released
     "Q": "m",  # Foods out-race balls in TreadmillGuy
-    "R": "m",  # K-Pop Slots Top 8 Pop Spot
+    "R": "y",  # K-Pop Slots Top 8 Pop Spot
     "S": "m",  # Bogey Bogey Bogey Bogey Bogey Bogey
     "T": "m",  # 3 Tetris Shapes on The Floor
     "U": "m",  # Sexiest Man has died
@@ -83,9 +83,18 @@ question_ids = known_outcomes.keys()
 # returns a dictionary of outcome sequences and winners
 def winners_optimized(outcomes, start, end):
     results = {}
+    unresolved_indices = [i for i, outcome in enumerate(outcomes) if outcome == "m"]
+    resolved_outcomes = "".join(
+        "y" if outcome == "y" else "n" if outcome == "n" else "_"
+        for outcome in outcomes
+    )
+
     for i in range(start, end):
-        binary = format(i, f"0{len(outcomes)}b")
-        current_outcome = "".join("y" if b == "1" else "n" for b in binary)
+        binary = format(i, f"0{len(unresolved_indices)}b")
+        current_outcome = list(resolved_outcomes)
+        for idx, bit in zip(unresolved_indices, binary):
+            current_outcome[idx] = "y" if bit == "1" else "n"
+        current_outcome = "".join(current_outcome)
 
         points_per_prediction = {
             k: points(v, current_outcome) for k, v in predictions.items()
@@ -105,7 +114,8 @@ def winners_optimized(outcomes, start, end):
 
 def parallel_winners(outcomes):
     num_cores = mp.cpu_count()
-    total_combinations = 2 ** len(outcomes)
+    unresolved_count = outcomes.count("m")
+    total_combinations = 2**unresolved_count
     chunk_size = total_combinations // num_cores
 
     with mp.Pool(num_cores) as pool:
