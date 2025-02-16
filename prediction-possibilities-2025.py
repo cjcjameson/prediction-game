@@ -51,7 +51,7 @@ validate_predictions()
 
 known_outcomes = {
     "A": "y",  # Bluesky on Bluesky past 20 million
-    "B": "m",  # Super Bowl Ads: 2 licks
+    "B": "n",  # Super Bowl Ads: 2 licks
     "C": "m",  # Mammal wins comedy wildlife photo awards
     "D": "m",  # 50 castmembers in SNL50 special
     "E": "m",  # Ruble in Truuuble
@@ -63,7 +63,7 @@ known_outcomes = {
     "K": "m",  # 3 bodily fluids on Hot Ones
     "L": "m",  # Tuba or Harp on Tiny Desk
     "M": "m",  # Smurf said 99 times
-    "N": "m",  # Odd # wins Beast Games
+    "N": "y",  # Odd # wins Beast Games
     "O": "y",  # Yodel Guy falls to death on Price is Right
     "P": "m",  # Luigi + Diddy released
     "Q": "m",  # Foods out-race balls in TreadmillGuy
