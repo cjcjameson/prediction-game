@@ -69,7 +69,7 @@ known_outcomes = {
     "Q": "m",  # Foods out-race balls in TreadmillGuy
     "R": "y",  # K-Pop Slots Top 8 Pop Spot
     "S": "m",  # Bogey Bogey Bogey Bogey Bogey Bogey
-    "T": "m",  # 3 Tetris Shapes on The Floor
+    "T": "y",  # 3 Tetris Shapes on The Floor
     "U": "m",  # Sexiest Man has died
     "V": "m",  # Senate Age down a Zendaya
     "W": "m",  # Hurricane Karen
