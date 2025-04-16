@@ -68,7 +68,7 @@ known_outcomes = {
     "P": "m",  # Luigi + Diddy released
     "Q": "m",  # Foods out-race balls in TreadmillGuy
     "R": "y",  # K-Pop Slots Top 8 Pop Spot
-    "S": "m",  # Bogey Bogey Bogey Bogey Bogey Bogey
+    "S": "y",  # Bogey Bogey Bogey Bogey Bogey Bogey
     "T": "y",  # 3 Tetris Shapes on The Floor
     "U": "m",  # Sexiest Man has died
     "V": "m",  # Senate Age down a Zendaya
