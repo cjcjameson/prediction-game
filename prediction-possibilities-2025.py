@@ -65,7 +65,7 @@ known_outcomes = {
     "M": "m",  # Smurf said 99 times
     "N": "y",  # Odd # wins Beast Games
     "O": "y",  # Yodel Guy falls to death on Price is Right
-    "P": "m",  # Luigi + Diddy released
+    "P": "y",  # Luigi + Diddy released
     "Q": "m",  # Foods out-race balls in TreadmillGuy
     "R": "y",  # K-Pop Slots Top 8 Pop Spot
     "S": "y",  # Bogey Bogey Bogey Bogey Bogey Bogey
