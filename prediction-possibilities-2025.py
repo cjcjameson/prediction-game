@@ -356,3 +356,23 @@ if __name__ == "__main__":
         print(mae_sorted)
 
     mean_difference_analysis()
+
+    # Add consolidated must-have predictions analysis
+    print("\nMUST-HAVE PREDICTIONS (100% or 0% needed):")
+    for contestant in ordered_winner_percentages:
+        if contestant[0] == "tie":
+            continue
+        must_haves = []
+        for question_id in question_ids:
+            if question_id in each_person_only_maybe_questions[contestant[0]]:
+                y_percent = each_person_only_maybe_questions[contestant[0]][question_id]["y"] / winner_tally[contestant[0]] * 100
+                if y_percent == 100:
+                    must_haves.append(f"{question_id} must be TRUE")
+                elif y_percent == 0:
+                    must_haves.append(f"{question_id} must be FALSE")
+        if must_haves:
+            print(f"\n{contestant[0]} needs:")
+            for must_have in must_haves:
+                print(f"  - {must_have}")
+
+    print("\nskipping mean error analysis")
