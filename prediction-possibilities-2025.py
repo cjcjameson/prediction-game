@@ -360,7 +360,7 @@ if __name__ == "__main__":
     # Add consolidated must-have predictions analysis
     print("\nMUST-HAVE PREDICTIONS (100% or 0% needed):")
     for contestant in ordered_winner_percentages:
-        if contestant[0] == "tie":
+        if contestant[0] == "tie" or contestant[0] not in each_person_only_maybe_questions:
             continue
         must_haves = []
         for question_id in question_ids:
