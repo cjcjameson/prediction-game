@@ -58,7 +58,7 @@ known_outcomes = {
     "F": "m",  # Good News said 4x on Futurama
     "G": "m",  # Change in 25 tallest skyscrapers
     "H": "m",  # Bitch wins national dog show
-    "I": "m",  # 1234 career WNBA points for Caitlin Clark
+    "I": "n",  # 1234 career WNBA points for Caitlin Clark
     "J": "m",  # GTA6 sex
     "K": "m",  # 3 bodily fluids on Hot Ones
     "L": "m",  # Tuba or Harp on Tiny Desk
