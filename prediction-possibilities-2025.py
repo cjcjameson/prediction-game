@@ -62,7 +62,7 @@ known_outcomes = {
     "J": "m",  # GTA6 sex
     "K": "m",  # 3 bodily fluids on Hot Ones
     "L": "m",  # Tuba or Harp on Tiny Desk
-    "M": "m",  # Smurf said 99 times
+    "M": "y",  # Smurf said 99 times
     "N": "y",  # Odd # wins Beast Games
     "O": "y",  # Yodel Guy falls to death on Price is Right
     "P": "y",  # Luigi + Diddy released
