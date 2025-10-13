@@ -4,8 +4,7 @@ import collections
 import os
 import sys
 import statistics
-import multiprocessing as mp
-from functools import partial
+# Historically used multiprocessing, but removed due to edge-case bugs
 
 # fmt: off
 predictions = {
@@ -80,7 +79,7 @@ known_outcomes = {
 question_ids = known_outcomes.keys()
 
 
-# returns a dictionary of outcome sequences and winners
+# returns a dictionary of outcome sequences and winner info
 def winners_optimized(outcomes, start, end):
     results = {}
     unresolved_indices = [i for i, outcome in enumerate(outcomes) if outcome == "m"]
@@ -106,27 +105,28 @@ def winners_optimized(outcomes, start, end):
             if points == max_points
         ]
 
-        winner = possible_winners[0] if len(possible_winners) == 1 else "tie"
-        results[current_outcome] = winner
+        if len(possible_winners) == 1:
+            winner = possible_winners[0]
+            was_tie = False
+        else:
+            # Use tie-breaker to determine winner among tied contestants
+            winner = tie_breaker(predictions, current_outcome, possible_winners)
+            was_tie = True
+        
+        results[current_outcome] = {
+            'winner': winner,
+            'was_tie': was_tie,
+            'tied_contestants': possible_winners
+        }
 
     return results
 
 
 def parallel_winners(outcomes):
-    num_cores = mp.cpu_count()
+    # Historically, we tried multiprocessing here but there were edge-case bugs
     unresolved_count = outcomes.count("m")
     total_combinations = 2**unresolved_count
-    chunk_size = total_combinations // num_cores
-
-    with mp.Pool(num_cores) as pool:
-        partial_winners = partial(winners_optimized, outcomes)
-        ranges = [
-            (i * chunk_size, min((i + 1) * chunk_size, total_combinations))
-            for i in range(num_cores)
-        ]
-        results = pool.starmap(partial_winners, ranges)
-
-    return {k: v for result in results for k, v in result.items()}
+    return winners_optimized(outcomes, 0, total_combinations)
 
 
 def points(rankings, outcomes):
@@ -137,16 +137,66 @@ def points(rankings, outcomes):
     return total
 
 
+def tie_breaker(predictions_dict, outcomes, tied_contestants):
+    """
+    Break ties by comparing highest-ranked correct predictions.
+    Returns the winner among the tied contestants.
+    """
+    if len(tied_contestants) == 1:
+        return tied_contestants[0]
+    
+    # For each tied contestant, get their highest-ranked correct predictions
+    contestant_rankings = {}
+    for contestant in tied_contestants:
+        rankings = predictions_dict[contestant]
+        # Get all correct predictions (where outcome == "y") with their rankings
+        correct_predictions = []
+        for ranking, outcome in zip(rankings, outcomes):
+            if outcome == "y":
+                correct_predictions.append(ranking)
+        # Sort in descending order (highest first)
+        contestant_rankings[contestant] = sorted(correct_predictions, reverse=True)
+    
+    # Compare rankings level by level
+    max_levels = max(len(rankings) for rankings in contestant_rankings.values())
+    
+    for level in range(max_levels):
+        level_scores = {}
+        for contestant, rankings in contestant_rankings.items():
+            if level < len(rankings):
+                level_scores[contestant] = rankings[level]
+            else:
+                level_scores[contestant] = 0  # No more correct predictions
+        
+        # Find the highest score at this level
+        max_score = max(level_scores.values())
+        winners_at_level = [c for c, score in level_scores.items() if score == max_score]
+        
+        # If only one winner at this level, they win the tiebreaker
+        if len(winners_at_level) == 1:
+            return winners_at_level[0]
+        
+        # If still tied, continue to next level
+        tied_contestants = winners_at_level
+    
+    # If we get here, all tied contestants are completely identical
+    # Return the first one alphabetically (original behavior)
+    return sorted(tied_contestants)[0]
+
+
 winner_tally = {k: 0 for k in predictions}
-winner_tally["tie"] = 0
 
 if __name__ == "__main__":
-    each_win = parallel_winners(list(known_outcomes.values()))
-    total_possible = len(each_win)
+    each_win_info = parallel_winners(list(known_outcomes.values()))
+    total_possible = len(each_win_info)
 
     # Question 1: how many total possible win paths per person?
-    for w in each_win.values():
-        winner_tally[w] += 1
+    for win_info in each_win_info.values():
+        winner_tally[win_info['winner']] += 1
+    
+    # Count tie scenarios
+    tie_scenarios = sum(1 for win_info in each_win_info.values() if win_info['was_tie'])
+    
     percentage_wins = winner_tally.copy()
     for winner, tally in percentage_wins.items():
         percentage_wins[winner] = float(tally) / float(total_possible)
@@ -157,7 +207,6 @@ if __name__ == "__main__":
     # Question 1b: how many points does each person currently have?
 
     contestant_current_scores = {k: 0 for k in predictions}
-    contestant_current_scores["tie"] = "n/a"
     for contestant, point_allocations in predictions.items():
         score = 0
         for yes_no_maybe, points_allocated in zip(
@@ -167,10 +216,64 @@ if __name__ == "__main__":
                 score += points_allocated
         contestant_current_scores[contestant] = score
 
+    # Identify tie-only contestants (those who can only win through ties)
+    tie_only_contestants = set()
+    for outcome, win_info in each_win_info.items():
+        if win_info['was_tie']:
+            for contestant in win_info['tied_contestants']:
+                # Check if this contestant has any direct wins (not through tie-breaking)
+                direct_wins = sum(1 for info in each_win_info.values() 
+                                if info['winner'] == contestant and not info['was_tie'])
+                if direct_wins == 0:  # No direct wins, only through tie-breaker
+                    tie_only_contestants.add(contestant)
+
     print("percent of win-paths per person (score so far in parentheses)")
+    
+    # Separate contestants into different categories for proper ordering
+    active_contestants = []
+    tie_only_contestants_list = []
+    eliminated_contestants = []
+    
     for winner, p in ordered_winner_percentages:
+        if p > 0.0:
+            active_contestants.append((winner, p))
+        elif winner in tie_only_contestants:
+            tie_only_contestants_list.append((winner, p))
+        else:
+            eliminated_contestants.append((winner, p))
+    
+    # Print active contestants first
+    for winner, p in active_contestants:
         score = contestant_current_scores[winner]
-        print(winner, ": ", "{:.1%}".format(p), "({})".format(score))
+        if p < 0.01:  # Less than 1%
+            print(winner, ": ", "{:.3%}".format(p), "({})".format(score))
+        else:
+            print(winner, ": ", "{:.1%}".format(p), "({})".format(score))
+    
+    # Print tie-only contestants
+    for winner, p in tie_only_contestants_list:
+        score = contestant_current_scores[winner]
+        # Calculate actual percentage of tie scenarios for this contestant
+        tie_scenario_count = sum(1 for win_info in each_win_info.values() 
+                               if win_info['was_tie'] and winner in win_info['tied_contestants'])
+        tie_percentage = tie_scenario_count / total_possible
+        if tie_percentage < 0.01:  # Less than 1%
+            print(winner, ": ", "{:.3%}".format(tie_percentage), "(tie-only paths)", "({})".format(score))
+        else:
+            print(winner, ": ", "{:.1%}".format(tie_percentage), "(tie-only paths)", "({})".format(score))
+    
+    # Print eliminated contestants last
+    for winner, p in eliminated_contestants:
+        score = contestant_current_scores[winner]
+        print(winner, ": ", "0.0% (eliminated)", "({})".format(score))
+    
+    print(f"\nTie-breaking Analysis:")
+    print(f"  - Total tie scenarios before tie-breaking: {tie_scenarios} ({tie_scenarios/total_possible:.1%})")
+    print(f"  - All ties resolved using highest-ranked prediction method")
+    if tie_only_contestants:
+        print(f"  - Contestants who can only win through ties: {', '.join(sorted(tie_only_contestants))}")
+    else:
+        print("  - No contestants can only win through ties")
 
     # Question 2: which events are most necessary for each person to win?
 
@@ -185,7 +288,8 @@ if __name__ == "__main__":
         k[0]: new_each_question_empty_yn_buckets() for k in ordered_winner_percentages
     }
 
-    for events, winner in each_win.items():
+    for events, win_info in each_win_info.items():
+        winner = win_info['winner']
         for idx, question_id in enumerate(question_ids):
             event_outcome = events[idx]
             each_person_with_question_buckets[winner][question_id][event_outcome] += 1
@@ -194,7 +298,7 @@ if __name__ == "__main__":
 
     only_people_with_win_paths = copy.deepcopy(each_person_with_question_buckets)
     for person, questions in each_person_with_question_buckets.items():
-        if winner_tally[person] == 0:
+        if winner_tally[person] == 0 and person not in tie_only_contestants:
             del only_people_with_win_paths[person]
 
     each_person_only_maybe_questions = copy.deepcopy(only_people_with_win_paths)
@@ -206,17 +310,48 @@ if __name__ == "__main__":
     each_person_question_percentage = copy.deepcopy(each_person_only_maybe_questions)
     for person, questions in each_person_only_maybe_questions.items():
         for question in questions:
-            raw_percentage = questions[question]["y"] / (
-                questions[question]["y"] + questions[question]["n"]
-            )
+            total = questions[question]["y"] + questions[question]["n"]
+            if total > 0:
+                raw_percentage = questions[question]["y"] / total
+            else:
+                raw_percentage = 0  # For tie-only contestants with no data
             each_person_question_percentage[person][question] = raw_percentage
+    
+    # Add tie-only contestants to Question 2 analysis
+    for contestant in tie_only_contestants:
+        # Analyze tie scenarios for this contestant
+        tie_scenarios_for_contestant = {}
+        for outcome, win_info in each_win_info.items():
+            if win_info['was_tie'] and contestant in win_info['tied_contestants']:
+                for idx, question_id in enumerate(question_ids):
+                    if known_outcomes[question_id] == "m":
+                        if question_id not in tie_scenarios_for_contestant:
+                            tie_scenarios_for_contestant[question_id] = {"y": 0, "n": 0}
+                        event_outcome = outcome[idx]
+                        tie_scenarios_for_contestant[question_id][event_outcome] += 1
+        
+        # Calculate percentages for tie-only contestant (always override existing values)
+        each_person_question_percentage[contestant] = {}
+        for question_id in tie_scenarios_for_contestant:
+            total = tie_scenarios_for_contestant[question_id]["y"] + tie_scenarios_for_contestant[question_id]["n"]
+            if total > 0:
+                percentage = tie_scenarios_for_contestant[question_id]["y"] / total
+                each_person_question_percentage[contestant][question_id] = percentage
 
     for person, questions in each_person_question_percentage.items():
+        # For tie-only contestants, count their tie scenarios as potential wins
+        if person in tie_only_contestants:
+            tie_scenario_count = sum(1 for win_info in each_win_info.values() 
+                                   if win_info['was_tie'] and person in win_info['tied_contestants'])
+            win_count = tie_scenario_count
+        else:
+            win_count = winner_tally[person]
+        
         print(
             "Contestant "
             + person
             + " has "
-            + str(winner_tally[person])
+            + str(win_count)
             + " ways to win, and needs the following to happen (high percentages) or not (low percentages)"
         )
 
@@ -271,12 +406,24 @@ if __name__ == "__main__":
 
     how_many_more_yes_buckets = {k: {} for k in range(maybes_count + 1)}
 
-    for outcome, winner in each_win.items():
+    for outcome, win_info in each_win_info.items():
+        winner = win_info['winner']
         how_many_more_yes = outcome.count("y") - yesses_already_count
         if not winner in how_many_more_yes_buckets[how_many_more_yes]:
             how_many_more_yes_buckets[how_many_more_yes][winner] = 1
         else:
             how_many_more_yes_buckets[how_many_more_yes][winner] += 1
+    
+    # Add tie-only contestants to Question 4 analysis
+    for contestant in tie_only_contestants:
+        # Analyze tie scenarios for this contestant
+        for outcome, win_info in each_win_info.items():
+            if win_info['was_tie'] and contestant in win_info['tied_contestants']:
+                how_many_more_yes = outcome.count("y") - yesses_already_count
+                if not contestant in how_many_more_yes_buckets[how_many_more_yes]:
+                    how_many_more_yes_buckets[how_many_more_yes][contestant] = 1
+                else:
+                    how_many_more_yes_buckets[how_many_more_yes][contestant] += 1
 
     for how_many_more_yes_bucket, person_counts in how_many_more_yes_buckets.items():
         print(
@@ -360,19 +507,60 @@ if __name__ == "__main__":
     # Add consolidated must-have predictions analysis
     print("\nMUST-HAVE PREDICTIONS (100% or 0% needed):")
     for contestant in ordered_winner_percentages:
-        if contestant[0] == "tie" or contestant[0] not in each_person_only_maybe_questions:
+        if contestant[0] == "tie" or (contestant[0] not in each_person_only_maybe_questions and contestant[0] not in tie_only_contestants):
             continue
         must_haves = []
-        for question_id in question_ids:
-            if question_id in each_person_only_maybe_questions[contestant[0]]:
-                y_percent = each_person_only_maybe_questions[contestant[0]][question_id]["y"] / winner_tally[contestant[0]] * 100
-                if y_percent == 100:
-                    must_haves.append(f"{question_id} must be TRUE")
-                elif y_percent == 0:
-                    must_haves.append(f"{question_id} must be FALSE")
+        if contestant[0] in each_person_only_maybe_questions:
+            for question_id in question_ids:
+                if question_id in each_person_only_maybe_questions[contestant[0]]:
+                    # Count ALL win scenarios (including tie scenarios) for this contestant
+                    total_win_scenarios = 0
+                    y_count_in_wins = 0
+                    
+                    for outcome, win_info in each_win_info.items():
+                        # Count scenarios where this contestant wins (either directly or through tie-breaking)
+                        if (win_info['winner'] == contestant[0] or 
+                            (win_info['was_tie'] and contestant[0] in win_info['tied_contestants'])):
+                            total_win_scenarios += 1
+                            # Check if this question is TRUE in this scenario
+                            question_idx = list(question_ids).index(question_id)
+                            if outcome[question_idx] == 'y':
+                                y_count_in_wins += 1
+                    
+                    if total_win_scenarios > 0:
+                        y_percent = y_count_in_wins / total_win_scenarios * 100
+                        if y_percent == 100:
+                            must_haves.append(f"{question_id} must be TRUE")
+                        elif y_percent == 0:
+                            must_haves.append(f"{question_id} must be FALSE")
         if must_haves:
             print(f"\n{contestant[0]} needs:")
             for must_have in must_haves:
                 print(f"  - {must_have}")
+        elif contestant[0] in tie_only_contestants:
+            print(f"\n{contestant[0]} needs:")
+            print(f"  - Can only win through tie-breaking scenarios")
+            # Analyze what LIND needs for tie scenarios
+            tie_scenarios_for_lind = {}
+            for outcome, win_info in each_win_info.items():
+                if win_info['was_tie'] and contestant[0] in win_info['tied_contestants']:
+                    for idx, question_id in enumerate(question_ids):
+                        if known_outcomes[question_id] == "m":
+                            if question_id not in tie_scenarios_for_lind:
+                                tie_scenarios_for_lind[question_id] = {"y": 0, "n": 0}
+                            event_outcome = outcome[idx]
+                            tie_scenarios_for_lind[question_id][event_outcome] += 1
+            
+            # Show requirements for tie scenarios
+            for question_id, counts in tie_scenarios_for_lind.items():
+                total = counts["y"] + counts["n"]
+                if total > 0:
+                    y_percent = counts["y"] / total * 100
+                    if y_percent == 100:
+                        print(f"  - {question_id} must be TRUE (in tie scenarios)")
+                    elif y_percent == 0:
+                        print(f"  - {question_id} must be FALSE (in tie scenarios)")
+                    else:
+                        print(f"  - {question_id} helps when TRUE ({y_percent:.0f}% of tie scenarios)")
 
     print("\nskipping mean error analysis")
