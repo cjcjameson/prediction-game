@@ -72,7 +72,7 @@ known_outcomes = {
     "T": "y",  # 3 Tetris Shapes on The Floor
     "U": "m",  # Sexiest Man has died
     "V": "m",  # Senate Age down a Zendaya
-    "W": "m",  # Hurricane Karen
+    "W": "n",  # Hurricane Karen
     "X": "m",  # Zootopia celebrating predators
     "Y": "m",  # 99 silhouettes
 }
