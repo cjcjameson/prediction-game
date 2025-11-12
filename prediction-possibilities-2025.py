@@ -69,7 +69,7 @@ known_outcomes = {
     "R": "y",  # K-Pop Slots Top 8 Pop Spot
     "S": "y",  # Bogey Bogey Bogey Bogey Bogey Bogey
     "T": "y",  # 3 Tetris Shapes on The Floor
-    "U": "m",  # Sexiest Man has died
+    "U": "y",  # Sexiest Man has died
     "V": "m",  # Senate Age down a Zendaya
     "W": "n",  # Hurricane Karen
     "X": "m",  # Zootopia celebrating predators
