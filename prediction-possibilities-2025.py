@@ -73,7 +73,7 @@ known_outcomes = {
     "V": "m",  # Senate Age down a Zendaya
     "W": "n",  # Hurricane Karen
     "X": "m",  # Zootopia celebrating predators
-    "Y": "m",  # 99 silhouettes
+    "Y": "y",  # 99 silhouettes
 }
 
 question_ids = known_outcomes.keys()
