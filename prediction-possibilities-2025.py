@@ -58,7 +58,7 @@ known_outcomes = {
     "G": "m",  # Change in 25 tallest skyscrapers
     "H": "y",  # Bitch wins national dog show
     "I": "n",  # 1234 career WNBA points for Caitlin Clark
-    "J": "m",  # GTA6 sex
+    "J": "n",  # GTA6 sex
     "K": "m",  # 3 bodily fluids on Hot Ones
     "L": "m",  # Tuba or Harp on Tiny Desk
     "M": "y",  # Smurf said 99 times
