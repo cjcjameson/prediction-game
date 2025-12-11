@@ -51,7 +51,7 @@ validate_predictions()
 known_outcomes = {
     "A": "y",  # Bluesky on Bluesky past 20 million
     "B": "n",  # Super Bowl Ads: 2 licks
-    "C": "m",  # Mammal wins comedy wildlife photo awards
+    "C": "y",  # Mammal wins comedy wildlife photo awards
     "D": "y",  # 50 castmembers in SNL50 special
     "E": "m",  # Ruble in Truuuble
     "F": "m",  # Good News said 4x on Futurama
