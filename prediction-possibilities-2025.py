@@ -65,7 +65,7 @@ known_outcomes = {
     "N": "y",  # Odd # wins Beast Games
     "O": "y",  # Yodel Guy falls to death on Price is Right
     "P": "y",  # Luigi + Diddy released
-    "Q": "m",  # Foods out-race balls in TreadmillGuy
+    "Q": "y",  # Foods out-race balls in TreadmillGuy
     "R": "y",  # K-Pop Slots Top 8 Pop Spot
     "S": "y",  # Bogey Bogey Bogey Bogey Bogey Bogey
     "T": "y",  # 3 Tetris Shapes on The Floor
