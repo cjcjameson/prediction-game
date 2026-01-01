@@ -53,14 +53,14 @@ known_outcomes = {
     "B": "n",  # Super Bowl Ads: 2 licks
     "C": "y",  # Mammal wins comedy wildlife photo awards
     "D": "y",  # 50 castmembers in SNL50 special
-    "E": "m",  # Ruble in Truuuble
-    "F": "m",  # Good News said 4x on Futurama
-    "G": "m",  # Change in 25 tallest skyscrapers
+    "E": "n",  # Ruble in Truuuble
+    "F": "n",  # Good News said 4x on Futurama
+    "G": "n",  # Change in 25 tallest skyscrapers
     "H": "y",  # Bitch wins national dog show
     "I": "n",  # 1234 career WNBA points for Caitlin Clark
     "J": "n",  # GTA6 sex
-    "K": "m",  # 3 bodily fluids on Hot Ones
-    "L": "m",  # Tuba or Harp on Tiny Desk
+    "K": "n",  # 3 bodily fluids on Hot Ones
+    "L": "n",  # Tuba or Harp on Tiny Desk
     "M": "y",  # Smurf said 99 times
     "N": "y",  # Odd # wins Beast Games
     "O": "y",  # Yodel Guy falls to death on Price is Right
@@ -70,9 +70,9 @@ known_outcomes = {
     "S": "y",  # Bogey Bogey Bogey Bogey Bogey Bogey
     "T": "y",  # 3 Tetris Shapes on The Floor
     "U": "y",  # Sexiest Man has died
-    "V": "m",  # Senate Age down a Zendaya
+    "V": "n",  # Senate Age down a Zendaya
     "W": "n",  # Hurricane Karen
-    "X": "m",  # Zootopia celebrating predators
+    "X": "y",  # Zootopia celebrating predators
     "Y": "y",  # 99 silhouettes
 }
 
