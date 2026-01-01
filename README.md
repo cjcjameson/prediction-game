@@ -1,24 +1,44 @@
 # Prediction Game
 
-Who can win the prediction game still?
+Calculates win probabilities for a prediction game where contestants rank questions by likelihood.
 
-This has been going for many years, and archived years are here too.
+## Rust version
 
-## How It Works
+Fast implementation for computing all 2^N possible outcomes.
 
-Each contestant ranks 25 predictions from 1 (most likely) to 25 (least likely). Points are awarded based on how high you ranked predictions that come true - the higher the rank, the more points you get.
+### Build & Run
 
-## Tie-Breaking Rules
+```bash
+cargo build --release
+./target/release/prediction_game
+```
 
-When two or more contestants are tied for the highest score, we use a hierarchical tie-breaking system:
+### Configure number of questions
 
-1. **Start with the highest-ranked prediction (25 points)**: Compare who got their 25-point prediction correct
-2. **Move down the rankings**: If still tied, compare 24-point predictions, then 23-point, and so on
-3. **First difference wins**: The first person to have a higher-ranked correct prediction wins the tiebreaker
-4. **Example**: If Alice got her 25 and 24 correct, but Bob only got his 25 correct, Alice wins the tiebreaker
+```bash
+NUM_Q=20 ./target/release/prediction_game
+```
 
-This ensures that contestants who were more confident about their highest-ranked predictions have an advantage in tie situations.
+### Run tests
 
-## Todo
+```bash
+cargo test
+```
 
-- try `uv`
+### Performance
+
+| Questions | Combinations | Time (release) |
+|-----------|--------------|----------------|
+| 10        | 1K           | 0.001s         |
+| 20        | 1M           | 0.6s           |
+| 22        | 4M           | 2.9s           |
+| 26        | 67M          | ~46s (est.)    |
+
+## Python version
+
+Original implementation in `prediction-possibilities-2026.py`.
+
+```bash
+# Test mode (10 questions)
+TEST_MODE=1 python3 prediction-possibilities-2026.py
+```
