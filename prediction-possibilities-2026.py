@@ -4,6 +4,7 @@ import collections
 import os
 import sys
 import statistics
+import time
 # Historically used multiprocessing, but removed due to edge-case bugs
 
 # fmt: off
@@ -44,7 +45,8 @@ def validate_predictions():
             sys.exit()
 
 
-validate_predictions()
+if not os.environ.get("TEST_MODE"):
+    validate_predictions()
 
 
 known_outcomes = {
@@ -77,6 +79,18 @@ known_outcomes = {
 }
 
 question_ids = known_outcomes.keys()
+
+# Performance testing mode - use smaller dataset
+if os.environ.get("TEST_MODE"):
+    predictions = {
+        'TEST_A': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'TEST_B': [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+    }
+    known_outcomes = {
+        "A": "m", "B": "m", "C": "m", "D": "m", "E": "m",
+        "F": "m", "G": "m", "H": "m", "I": "m", "J": "m",
+    }
+    question_ids = known_outcomes.keys()
 
 
 # returns a dictionary of outcome sequences and winner info
@@ -126,7 +140,10 @@ def parallel_winners(outcomes):
     # Historically, we tried multiprocessing here but there were edge-case bugs
     unresolved_count = outcomes.count("m")
     total_combinations = 2**unresolved_count
-    return winners_optimized(outcomes, 0, total_combinations)
+    start = time.time()
+    result = winners_optimized(outcomes, 0, total_combinations)
+    print(f"Hot loop took {time.time() - start:.3f}s for {total_combinations} combinations")
+    return result
 
 
 def points(rankings, outcomes):
