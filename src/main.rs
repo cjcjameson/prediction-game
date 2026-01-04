@@ -21,16 +21,22 @@ pub struct GameData {
 /// Aggregated statistics - computed on-the-fly, no need to store all 67M results
 #[derive(Clone)]
 pub struct Stats {
-    /// How many times each contestant wins (after tie-breaking)
+    /// How many times each contestant wins definitively (no tie, or won tie-breaker)
     pub winner_tally: HashMap<String, u64>,
-    /// Total number of tie scenarios (before tie-breaking)
-    pub tie_count: u64,
-    /// How many scenarios each contestant could win (including ties they're part of)
+    /// Scenarios where tie-breaker determined a winner
+    pub tie_broken_count: u64,
+    /// Scenarios where tie couldn't be broken (true tie, no winner)
+    pub true_tie_count: u64,
+    /// True ties by yes-count (for debugging)
+    pub true_ties_by_yes_count: Vec<u64>,
+    /// How many scenarios each contestant could win (had max score, including ties)
     pub win_paths: HashMap<String, u64>,
     /// For each contestant, for each question index: (yes_wins, no_wins)
     pub person_question_buckets: HashMap<String, Vec<(u64, u64)>>,
     /// For each yes-count (0..=num_maybes): count per contestant
     pub yes_buckets: Vec<HashMap<String, u64>>,
+    /// For true ties: for each question index, (yes_count, no_count)
+    pub true_tie_question_buckets: Vec<(u64, u64)>,
 }
 
 impl Stats {
@@ -46,13 +52,19 @@ impl Stats {
         }
         
         let yes_buckets = (0..=num_maybes).map(|_| HashMap::new()).collect();
-        
+
+        let true_ties_by_yes_count = vec![0; num_maybes + 1];
+        let true_tie_question_buckets = vec![(0, 0); num_questions];
+
         Stats {
             winner_tally,
-            tie_count: 0,
+            tie_broken_count: 0,
+            true_tie_count: 0,
+            true_ties_by_yes_count,
             win_paths,
             person_question_buckets,
             yes_buckets,
+            true_tie_question_buckets,
         }
     }
     
@@ -62,8 +74,12 @@ impl Stats {
             *self.winner_tally.entry(name).or_insert(0) += count;
         }
         
-        // Merge tie_count
-        self.tie_count += other.tie_count;
+        // Merge tie counts
+        self.tie_broken_count += other.tie_broken_count;
+        self.true_tie_count += other.true_tie_count;
+        for (i, count) in other.true_ties_by_yes_count.into_iter().enumerate() {
+            self.true_ties_by_yes_count[i] += count;
+        }
         
         // Merge win_paths
         for (name, count) in other.win_paths {
@@ -87,6 +103,12 @@ impl Stats {
             for (name, count) in bucket {
                 *self.yes_buckets[i].entry(name).or_insert(0) += count;
             }
+        }
+        
+        // Merge true_tie_question_buckets
+        for (i, (y, n)) in other.true_tie_question_buckets.into_iter().enumerate() {
+            self.true_tie_question_buckets[i].0 += y;
+            self.true_tie_question_buckets[i].1 += n;
         }
         
         self
@@ -240,44 +262,56 @@ pub fn compute_stats(
                     .map(|(idx, _)| *idx)
                     .collect();
                 
-                let was_tie = winner_indices.len() > 1;
-                let winner_idx = if !was_tie {
-                    winner_indices[0]
+                let needs_tiebreaker = winner_indices.len() > 1;
+                
+                // Determine winner (if any)
+                let winner_idx: Option<usize> = if !needs_tiebreaker {
+                    Some(winner_indices[0])
                 } else {
                     tie_breaker_idx(predictions, &current_outcome, &winner_indices)
                 };
                 
-                // Update stats
-                let winner_name = &contestants[winner_idx];
-                *stats.winner_tally.get_mut(winner_name).unwrap() += 1;
+                // Calculate yes count and more_yesses once
+                let yes_count = current_outcome.iter().filter(|&&c| c == 'y').count();
+                let more_yesses = yes_count - yesses_already;
                 
-                if was_tie {
-                    stats.tie_count += 1;
-                }
-                
-                // Win paths for all tied contestants
-                for &idx in &winner_indices {
-                    let name = &contestants[idx];
-                    *stats.win_paths.get_mut(name).unwrap() += 1;
-                    
-                    // Question buckets
-                    if let Some(buckets) = stats.person_question_buckets.get_mut(name) {
-                        for (q_idx, &outcome) in current_outcome.iter().enumerate() {
-                            if outcome == 'y' {
-                                buckets[q_idx].0 += 1;
-                            } else {
-                                buckets[q_idx].1 += 1;
+                // Update all stats based on the actual winner (not all tied contestants)
+                match winner_idx {
+                    Some(idx) => {
+                        let winner_name = &contestants[idx];
+                        *stats.winner_tally.get_mut(winner_name).unwrap() += 1;
+                        *stats.win_paths.get_mut(winner_name).unwrap() += 1;
+                        *stats.yes_buckets[more_yesses].entry(winner_name.clone()).or_insert(0) += 1;
+                        
+                        if needs_tiebreaker {
+                            stats.tie_broken_count += 1;
+                        }
+                        
+                        // Question buckets - only for actual winner
+                        if let Some(buckets) = stats.person_question_buckets.get_mut(winner_name) {
+                            for (q_idx, &outcome) in current_outcome.iter().enumerate() {
+                                if outcome == 'y' {
+                                    buckets[q_idx].0 += 1;
+                                } else {
+                                    buckets[q_idx].1 += 1;
+                                }
                             }
                         }
                     }
-                }
-                
-                // Yes-count buckets
-                let yes_count = current_outcome.iter().filter(|&&c| c == 'y').count();
-                let more_yesses = yes_count - yesses_already;
-                for &idx in &winner_indices {
-                    let name = &contestants[idx];
-                    *stats.yes_buckets[more_yesses].entry(name.clone()).or_insert(0) += 1;
+                    None => {
+                        // True tie - no winner
+                        stats.true_tie_count += 1;
+                        stats.true_ties_by_yes_count[more_yesses] += 1;
+                        
+                        // Track which questions were yes/no in true tie scenarios
+                        for (q_idx, &outcome) in current_outcome.iter().enumerate() {
+                            if outcome == 'y' {
+                                stats.true_tie_question_buckets[q_idx].0 += 1;
+                            } else {
+                                stats.true_tie_question_buckets[q_idx].1 += 1;
+                            }
+                        }
+                    }
                 }
                 
                 stats
@@ -301,17 +335,18 @@ pub fn calculate_points(rankings: &[u32], outcomes: &[char]) -> u32 {
 }
 
 /// Tie breaker that works with indices instead of names (faster)
+/// Returns Some(winner_idx) if tie was broken, None if true tie (no winner)
 fn tie_breaker_idx(
     predictions: &[(String, Vec<u32>)],
     outcomes: &[char],
     tied_indices: &[usize],
-) -> usize {
+) -> Option<usize> {
     if tied_indices.len() == 1 {
-        return tied_indices[0];
+        return Some(tied_indices[0]);
     }
     
     // Get each contestant's correct predictions sorted descending
-    let mut contestant_rankings: Vec<(usize, Vec<u32>)> = tied_indices.iter()
+    let contestant_rankings: Vec<(usize, Vec<u32>)> = tied_indices.iter()
         .map(|&idx| {
             let rankings = &predictions[idx].1;
             let mut correct: Vec<u32> = rankings.iter()
@@ -351,13 +386,12 @@ fn tie_breaker_idx(
             .collect();
         
         if remaining.len() == 1 {
-            return remaining[0];
+            return Some(remaining[0]);
         }
     }
     
-    // Still tied - return first alphabetically
-    remaining.sort_by(|&a, &b| predictions[a].0.cmp(&predictions[b].0));
-    remaining[0]
+    // Still tied after all levels - true tie, no winner
+    None
 }
 
 // ============================================================================
@@ -369,8 +403,10 @@ fn print_results(data: &GameData, stats: &Stats) {
     let outcomes = data.outcomes_vec();
     let question_ids = data.question_ids();
     
-    let total_possible: u64 = stats.winner_tally.values().sum();
-    let total_f = total_possible as f64;
+    // Total scenarios includes true ties (where no one wins)
+    let total_with_winners: u64 = stats.winner_tally.values().sum::<u64>();
+    let total_scenarios: u64 = total_with_winners + stats.true_tie_count;
+    let total_f = total_scenarios as f64;
 
     // Calculate current scores
     let mut current_scores: HashMap<String, u32> = HashMap::new();
@@ -383,34 +419,52 @@ fn print_results(data: &GameData, stats: &Stats) {
         current_scores.insert(name.clone(), score);
     }
 
-    // Sort by percentage descending
+    // Sort by percentage descending (include True Tie as pseudo-participant)
     let mut percentages: Vec<_> = stats.winner_tally.iter()
         .map(|(name, count)| (name.clone(), *count as f64 / total_f))
         .collect();
+    // Add True Tie entry
+    if stats.true_tie_count > 0 {
+        percentages.push(("⚖️ TRUE TIE".to_string(), stats.true_tie_count as f64 / total_f));
+    }
     percentages.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
 
     println!("percent of win-paths per person (score so far in parentheses)");
     for (name, pct) in &percentages {
-        let score = current_scores.get(name).unwrap_or(&0);
-        if *pct == 0.0 {
-            println!("{} :  0.0% (eliminated) ({})", name, score);
-        } else if *pct < 0.01 {
-            println!("{} :  {:.3}% ({})", name, pct * 100.0, score);
+        if name == "⚖️ TRUE TIE" {
+            if *pct < 0.01 {
+                println!("{} :  {:.4}% (no winner)", name, pct * 100.0);
+            } else {
+                println!("{} :  {:.1}% (no winner)", name, pct * 100.0);
+            }
         } else {
-            println!("{} :  {:.1}% ({})", name, pct * 100.0, score);
+            let score = current_scores.get(name).unwrap_or(&0);
+            if *pct == 0.0 {
+                println!("{} :  0.0% (eliminated) ({})", name, score);
+            } else if *pct < 0.01 {
+                println!("{} :  {:.3}% ({})", name, pct * 100.0, score);
+            } else {
+                println!("{} :  {:.1}% ({})", name, pct * 100.0, score);
+            }
         }
     }
 
+    let total_ties = stats.tie_broken_count + stats.true_tie_count;
     println!("\nTie-breaking Analysis:");
-    println!("  - Total tie scenarios before tie-breaking: {} ({:.1}%)", 
-             stats.tie_count, stats.tie_count as f64 / total_f * 100.0);
-    println!("  - All ties resolved using highest-ranked prediction method");
+    println!("  - Scenarios with ties: {} ({:.1}%)", total_ties, total_ties as f64 / total_f * 100.0);
+    println!("  - Ties broken (winner determined): {}", stats.tie_broken_count);
+    println!("  - True ties (no winner): {}", stats.true_tie_count);
 
-    // Print win paths for each contestant
+    // Print definitive wins for each contestant (including True Tie)
+    // These sum to total_scenarios (67M)
     for (name, _) in &percentages {
-        let paths = stats.win_paths.get(name).unwrap_or(&0);
-        if *paths > 0 {
-            println!("Contestant {} has {} ways to win", name, paths);
+        if name == "⚖️ TRUE TIE" {
+            println!("{} has {} scenarios", name, stats.true_tie_count);
+        } else {
+            let wins = stats.winner_tally.get(name).unwrap_or(&0);
+            if *wins > 0 {
+                println!("Contestant {} has {} ways to win", name, wins);
+            }
         }
     }
 
@@ -424,8 +478,11 @@ fn print_results(data: &GameData, stats: &Stats) {
         .collect();
 
     for (name, _pct) in &percentages {
-        let paths = *stats.win_paths.get(name).unwrap_or(&0);
-        if paths == 0 {
+        if name == "⚖️ TRUE TIE" {
+            continue; // Skip TRUE TIE for question analysis
+        }
+        let wins = *stats.winner_tally.get(name).unwrap_or(&0);
+        if wins == 0 {
             continue;
         }
 
@@ -442,7 +499,7 @@ fn print_results(data: &GameData, stats: &Stats) {
 
         println!(
             "Contestant {} has {} ways to win, and needs the following to happen (high percentages) or not (low percentages)",
-            name, paths
+            name, wins
         );
         if let Some((qid, pct)) = q_percentages.first() {
             println!("\t{}: {:.1}%", qid, pct * 100.0);
@@ -460,11 +517,21 @@ fn print_results(data: &GameData, stats: &Stats) {
             "Question {} coming TRUE will help (high percentages) or hurt (low percentages) these people",
             qid
         );
-        
+
         let mut person_needs: Vec<(String, f64)> = Vec::new();
         for (name, _) in &percentages {
-            let paths = *stats.win_paths.get(name).unwrap_or(&0);
-            if paths == 0 {
+            if name == "⚖️ TRUE TIE" {
+                // Add TRUE TIE's percentage for this question
+                let (y, n) = stats.true_tie_question_buckets[*idx];
+                let total = y + n;
+                let pct = if total > 0 { y as f64 / total as f64 } else { 0.0 };
+                if stats.true_tie_count > 0 {
+                    person_needs.push((name.clone(), pct));
+                }
+                continue;
+            }
+            let wins = *stats.winner_tally.get(name).unwrap_or(&0);
+            if wins == 0 {
                 continue;
             }
             let buckets = stats.person_question_buckets.get(name).unwrap();
@@ -474,23 +541,30 @@ fn print_results(data: &GameData, stats: &Stats) {
             person_needs.push((name.clone(), pct));
         }
         person_needs.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
-        
+
         for (name, pct) in person_needs {
             println!("\t{}: {:.1}%", name, pct * 100.0);
         }
     }
 
-    // Question 4: by yes-count
+    // Question 4: by yes-count (including true ties)
     println!("\nQuestion 4: who wins, organized by how many more 'yes' outcomes");
     
     for (num_yes, bucket) in stats.yes_buckets.iter().enumerate() {
-        if bucket.is_empty() {
+        let true_ties_at_level = stats.true_ties_by_yes_count.get(num_yes).copied().unwrap_or(0);
+        if bucket.is_empty() && true_ties_at_level == 0 {
             continue;
         }
         println!("If there are {} more yesses, then these people have win-paths:", num_yes);
         
-        let mut sorted: Vec<_> = bucket.iter().collect();
-        sorted.sort_by(|a, b| b.1.cmp(a.1));
+        // Combine regular contestants with true tie count
+        let mut sorted: Vec<(String, u64)> = bucket.iter()
+            .map(|(name, count)| (name.clone(), *count))
+            .collect();
+        if true_ties_at_level > 0 {
+            sorted.push(("⚖️ TRUE TIE".to_string(), true_ties_at_level));
+        }
+        sorted.sort_by(|a, b| b.1.cmp(&a.1));
         
         for (name, count) in sorted {
             println!("\t{}: {}", name, count);
@@ -548,8 +622,12 @@ fn main() {
     let stats = compute_stats(&predictions, &outcomes);
     let duration = start.elapsed();
 
-    let total: u64 = stats.winner_tally.values().sum();
-    println!("Computed {} combinations in {:.1}s\n", total, duration.as_secs_f64());
+    let winners_determined: u64 = stats.winner_tally.values().sum::<u64>();
+    let total_scenarios: u64 = winners_determined + stats.true_tie_count;
+    println!("Computed {} scenarios in {:.1}s ({} with definitive winner, {} true ties)\n", 
+             total_scenarios, duration.as_secs_f64(),
+             winners_determined,
+             stats.true_tie_count);
 
     print_results(&data, &stats);
 }
@@ -596,24 +674,25 @@ mod tests {
         let predictions = test_predictions();
         let outcomes: Vec<char> = vec!['m'; 10];
         let stats = compute_stats(&predictions, &outcomes);
-        let total: u64 = stats.winner_tally.values().sum();
+        // Total = winners + true ties
+        let total: u64 = stats.winner_tally.values().sum::<u64>() + stats.true_tie_count;
         assert_eq!(total, 1024);
     }
 
     #[test]
-    fn win_percentages_match_python() {
+    fn symmetric_predictions_have_true_ties() {
+        // TEST_A and TEST_B are perfect inverses, so some scenarios are true ties
         let predictions = test_predictions();
         let outcomes: Vec<char> = vec!['m'; 10];
         let stats = compute_stats(&predictions, &outcomes);
         
+        // With symmetric predictions, true ties occur when both have same sorted rankings
+        assert!(stats.true_tie_count > 0, "Symmetric predictions should produce true ties");
+        
+        // Winners should be equal (symmetry)
         let test_a_wins = *stats.winner_tally.get("TEST_A").unwrap();
         let test_b_wins = *stats.winner_tally.get("TEST_B").unwrap();
-        
-        let pct_a = test_a_wins as f64 / 1024.0 * 100.0;
-        let pct_b = test_b_wins as f64 / 1024.0 * 100.0;
-        
-        assert!((pct_a - 51.6).abs() < 0.1, "TEST_A should be ~51.6%, got {:.1}%", pct_a);
-        assert!((pct_b - 48.4).abs() < 0.1, "TEST_B should be ~48.4%, got {:.1}%", pct_b);
+        assert_eq!(test_a_wins, test_b_wins, "Symmetric predictions should have equal wins");
     }
 
     #[test]
@@ -621,6 +700,8 @@ mod tests {
         let predictions = test_predictions();
         let outcomes: Vec<char> = vec!['m'; 10];
         let stats = compute_stats(&predictions, &outcomes);
-        assert_eq!(stats.tie_count, 48);
+        // Total ties = broken + true ties
+        let total_ties = stats.tie_broken_count + stats.true_tie_count;
+        assert_eq!(total_ties, 48);
     }
 }
