@@ -1,44 +1,50 @@
 # Prediction Game
 
-Calculates win probabilities for a prediction game where contestants rank questions by likelihood.
+Calculates win probabilities for a prediction game where contestants rank 26 questions by likelihood (1-26). Points are awarded based on rankings for questions that come true.
 
-## Rust version
-
-Fast implementation for computing all 2^N possible outcomes.
-
-### Build & Run
+## Quick Start
 
 ```bash
+# Build
 cargo build --release
-./target/release/prediction_game
+
+# Run with test data (fast - 14 unresolved questions)
+./target/release/prediction_game data/2026-test.json
+
+# Run with full 2026 data (slow - 26 unresolved = 67M combinations)
+./target/release/prediction_game data/2026.json
 ```
 
-### Configure number of questions
+## Project Structure
 
-```bash
-NUM_Q=20 ./target/release/prediction_game
+```
+├── data/
+│   ├── 2026.json       # Full 2026 predictions (17 contestants, 26 questions)
+│   └── 2026-test.json  # Test scenario (5 contestants, 14 unresolved)
+├── src/
+│   └── main.rs         # All Rust code (loading, validation, computation, output)
+├── archive/            # Historical Python scripts by year
+└── prediction-possibilities-2026.py  # Original Python implementation
 ```
 
-### Run tests
+## Data Format (JSON)
+
+```json
+{
+  "year": 2026,
+  "questions": { "A": "Description...", ... },
+  "outcomes": { "A": "m", "B": "y", "C": "n", ... },
+  "predictions": {
+    "PlayerName": [22, 7, 8, ...],  // rankings for A, B, C, ... (1-26)
+    ...
+  }
+}
+```
+
+Outcomes: `"y"` = yes (happened), `"n"` = no, `"m"` = maybe (unresolved)
+
+## Running Tests
 
 ```bash
 cargo test
-```
-
-### Performance
-
-| Questions | Combinations | Time (release) |
-|-----------|--------------|----------------|
-| 10        | 1K           | 0.001s         |
-| 20        | 1M           | 0.6s           |
-| 22        | 4M           | 2.9s           |
-| 26        | 67M          | ~46s (est.)    |
-
-## Python version
-
-Original implementation in `prediction-possibilities-2026.py`.
-
-```bash
-# Test mode (10 questions)
-TEST_MODE=1 python3 prediction-possibilities-2026.py
 ```

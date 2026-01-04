@@ -1,0 +1,44 @@
+{
+  "year": 2026,
+  "questions": {
+    "A": "AI-Assisted Year-End Hot 100 Song",
+    "B": "Starr Wars: Vita VonTesse Beats Mia on Drag Race",
+    "C": "Change in 30 Tallest Skyscrapers",
+    "D": "NFL Octuple Scorigami!",
+    "E": "Dragon/Wings at 10k+ Drone Show",
+    "F": "Dragging Wings at Victorias Secret Fashion Show",
+    "G": "Garfield Eats 7 Donuts",
+    "H": "Colbert's Final Wave is with Right Hand",
+    "I": "6 Decks of Yellow Cards at World Cup",
+    "J": "Grogu Sneezes, Farts, Coughs, or Burps",
+    "K": "Yaaasss Queeen captured by the winner of the World Chess Championship",
+    "L": "Jake From State Farm Summoned Thrice",
+    "M": "PREDICULOUS in Wheel of Fortune Puzzle",
+    "N": "2 Immortals in Combat in Mortal Kombat 2",
+    "O": "Boomer Wins A Razzie",
+    "P": "$40,000,000,000,000.00 < National Debt",
+    "Q": "(Butt) Crack in the Bridge (-rton)",
+    "R": "Nom Nom Nom Nom Nom Nom Nom: No Tony Wins",
+    "S": "Forky Gets Stuck",
+    "T": "All Cats Lose Anthrocon Dance Competition",
+    "U": "5 Slots in a Row, Balled on The Wall",
+    "V": "Johan Wins An Olympic Medal... Any Johan",
+    "W": "Obama's Playlist Features Multiple Sex Acts",
+    "X": "Blues Outperform Reds: Midterms or Sports",
+    "Y": "150 Spanks from @thedonutdaddy",
+    "Z": "Chaos Erupts! Wait, not Chaos. 50 Volcanoes."
+  },
+  "outcomes": {
+    "A": "y", "B": "n", "C": "y", "D": "n", "E": "y", "F": "n", "G": "y", "H": "n",
+    "I": "y", "J": "n", "K": "y", "L": "n", "M": "m", "N": "m", "O": "m", "P": "m",
+    "Q": "m", "R": "m", "S": "m", "T": "m", "U": "m", "V": "m", "W": "m", "X": "m",
+    "Y": "m", "Z": "m"
+  },
+  "predictions": {
+    "Melody🥧": [22, 7, 8, 14, 9, 10, 2, 3, 17, 5, 16, 13, 23, 11, 21, 20, 19, 24, 4, 26, 12, 6, 15, 25, 1, 18],
+    "Alicia🐸": [23, 16, 13, 10, 4, 26, 24, 17, 3, 21, 1, 19, 15, 20, 25, 22, 11, 9, 8, 6, 14, 5, 7, 18, 2, 12],
+    "Sonya🐣": [23, 15, 24, 9, 17, 10, 2, 19, 11, 5, 13, 6, 18, 1, 21, 3, 22, 12, 7, 16, 4, 8, 25, 14, 20, 26],
+    "Jill🐨": [6, 4, 2, 10, 14, 17, 22, 23, 11, 18, 12, 15, 8, 16, 24, 25, 19, 3, 9, 26, 5, 13, 20, 7, 1, 21],
+    "CJ⭕": [10, 9, 8, 4, 17, 5, 2, 23, 22, 15, 14, 18, 1, 20, 12, 25, 19, 3, 16, 11, 6, 24, 7, 13, 21, 26]
+  }
+}
