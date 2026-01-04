@@ -468,14 +468,62 @@ fn print_results(data: &GameData, stats: &Stats) {
         }
     }
 
-    // Question 2: per-contestant question analysis
-    println!("\n--- Per-contestant question analysis ---");
-    
+    // Build maybe_questions list once
     let maybe_questions: Vec<(usize, String)> = question_ids.iter()
         .enumerate()
         .filter(|(_, qid)| data.outcomes.get(*qid).map(|o| o == "m").unwrap_or(false))
         .map(|(i, qid)| (i, qid.clone()))
         .collect();
+
+    // Must-Haves & Almost-Must-Haves Analysis
+    println!("\n--- Must-Haves & Almost-Must-Haves ---");
+    println!("(Questions where a contestant needs YES ≥95% or NO ≥95% of their win paths)\n");
+    
+    let mut any_must_haves = false;
+    for (name, _pct) in &percentages {
+        if name == "⚖️ TRUE TIE" {
+            continue;
+        }
+        let wins = *stats.winner_tally.get(name).unwrap_or(&0);
+        if wins == 0 {
+            continue;
+        }
+        
+        let buckets = stats.person_question_buckets.get(name).unwrap();
+        let mut must_haves: Vec<(String, &str, f64)> = Vec::new();
+        
+        for (idx, qid) in &maybe_questions {
+            let (y, n) = buckets[*idx];
+            let total = y + n;
+            if total == 0 {
+                continue;
+            }
+            let pct_yes = y as f64 / total as f64;
+            
+            if pct_yes >= 0.95 {
+                let label = if pct_yes >= 1.0 { "MUST be YES" } else { "almost must YES" };
+                must_haves.push((qid.clone(), label, pct_yes));
+            } else if pct_yes <= 0.05 {
+                let label = if pct_yes <= 0.0 { "MUST be NO" } else { "almost must NO" };
+                must_haves.push((qid.clone(), label, pct_yes));
+            }
+        }
+        
+        if !must_haves.is_empty() {
+            any_must_haves = true;
+            println!("{}:", name);
+            for (qid, label, pct) in must_haves {
+                println!("  Q{}: {} ({:.1}% yes)", qid, label, pct * 100.0);
+            }
+        }
+    }
+    
+    if !any_must_haves {
+        println!("No must-haves or almost-must-haves at this stage.");
+    }
+
+    // Question 2: per-contestant question analysis
+    println!("\n--- Per-contestant question analysis ---");
 
     for (name, _pct) in &percentages {
         if name == "⚖️ TRUE TIE" {
