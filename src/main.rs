@@ -398,7 +398,15 @@ fn tie_breaker_idx(
 // Output formatting
 // ============================================================================
 
-fn print_results(data: &GameData, stats: &Stats) {
+fn print_results(
+    data: &GameData, 
+    stats: &Stats,
+    show_summary: bool,
+    show_win_paths: bool,
+    show_must_haves: bool,
+    show_per_contestant: bool,
+    show_per_question: bool,
+) {
     let predictions = data.predictions_vec();
     let outcomes = data.outcomes_vec();
     let question_ids = data.question_ids();
@@ -429,41 +437,46 @@ fn print_results(data: &GameData, stats: &Stats) {
     }
     percentages.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
 
-    println!("percent of win-paths per person (score so far in parentheses)");
-    for (name, pct) in &percentages {
-        if name == "⚖️ TRUE TIE" {
-            if *pct < 0.01 {
-                println!("{} :  {:.4}% (no winner)", name, pct * 100.0);
+    // Section: Summary (percentages)
+    if show_summary {
+        println!("percent of win-paths per person (score so far in parentheses)");
+        for (name, pct) in &percentages {
+            if name == "⚖️ TRUE TIE" {
+                if *pct < 0.01 {
+                    println!("{} :  {:.4}% (no winner)", name, pct * 100.0);
+                } else {
+                    println!("{} :  {:.1}% (no winner)", name, pct * 100.0);
+                }
             } else {
-                println!("{} :  {:.1}% (no winner)", name, pct * 100.0);
-            }
-        } else {
-            let score = current_scores.get(name).unwrap_or(&0);
-            if *pct == 0.0 {
-                println!("{} :  0.0% (eliminated) ({})", name, score);
-            } else if *pct < 0.01 {
-                println!("{} :  {:.3}% ({})", name, pct * 100.0, score);
-            } else {
-                println!("{} :  {:.1}% ({})", name, pct * 100.0, score);
+                let score = current_scores.get(name).unwrap_or(&0);
+                if *pct == 0.0 {
+                    println!("{} :  0.0% (eliminated) ({})", name, score);
+                } else if *pct < 0.01 {
+                    println!("{} :  {:.3}% ({})", name, pct * 100.0, score);
+                } else {
+                    println!("{} :  {:.1}% ({})", name, pct * 100.0, score);
+                }
             }
         }
     }
 
-    let total_ties = stats.tie_broken_count + stats.true_tie_count;
-    println!("\nTie-breaking Analysis:");
-    println!("  - Scenarios with ties: {} ({:.1}%)", total_ties, total_ties as f64 / total_f * 100.0);
-    println!("  - Ties broken (winner determined): {}", stats.tie_broken_count);
-    println!("  - True ties (no winner): {}", stats.true_tie_count);
+    // Section: Win paths & tie-breaking
+    if show_win_paths {
+        let total_ties = stats.tie_broken_count + stats.true_tie_count;
+        println!("\nTie-breaking Analysis:");
+        println!("  - Scenarios with ties: {} ({:.1}%)", total_ties, total_ties as f64 / total_f * 100.0);
+        println!("  - Ties broken (winner determined): {}", stats.tie_broken_count);
+        println!("  - True ties (no winner): {}", stats.true_tie_count);
 
-    // Print definitive wins for each contestant (including True Tie)
-    // These sum to total_scenarios (67M)
-    for (name, _) in &percentages {
-        if name == "⚖️ TRUE TIE" {
-            println!("{} has {} scenarios", name, stats.true_tie_count);
-        } else {
-            let wins = stats.winner_tally.get(name).unwrap_or(&0);
-            if *wins > 0 {
-                println!("Contestant {} has {} ways to win", name, wins);
+        // Print definitive wins for each contestant (including True Tie)
+        for (name, _) in &percentages {
+            if name == "⚖️ TRUE TIE" {
+                println!("{} has {} scenarios", name, stats.true_tie_count);
+            } else {
+                let wins = stats.winner_tally.get(name).unwrap_or(&0);
+                if *wins > 0 {
+                    println!("Contestant {} has {} ways to win", name, wins);
+                }
             }
         }
     }
@@ -475,137 +488,146 @@ fn print_results(data: &GameData, stats: &Stats) {
         .map(|(i, qid)| (i, qid.clone()))
         .collect();
 
-    // Must-Haves & Almost-Must-Haves Analysis
-    println!("\n--- Must-Haves & Almost-Must-Haves ---");
-    println!("(Questions where a contestant needs YES ≥95% or NO ≥95% of their win paths)\n");
-    
-    let mut any_must_haves = false;
-    for (name, _pct) in &percentages {
-        if name == "⚖️ TRUE TIE" {
-            continue;
-        }
-        let wins = *stats.winner_tally.get(name).unwrap_or(&0);
-        if wins == 0 {
-            continue;
-        }
+    // Section: Must-Haves & Almost-Must-Haves Analysis
+    if show_must_haves {
+        println!("\n--- Must-Haves & Almost-Must-Haves ---");
+        println!("(Questions where a contestant needs YES ≥95% or NO ≥95% of their win paths)\n");
         
-        let buckets = stats.person_question_buckets.get(name).unwrap();
-        let mut must_haves: Vec<(String, &str, f64)> = Vec::new();
-        
-        for (idx, qid) in &maybe_questions {
-            let (y, n) = buckets[*idx];
-            let total = y + n;
-            if total == 0 {
-                continue;
-            }
-            let pct_yes = y as f64 / total as f64;
-            
-            if pct_yes >= 0.95 {
-                let label = if pct_yes >= 1.0 { "MUST be YES" } else { "almost must YES" };
-                must_haves.push((qid.clone(), label, pct_yes));
-            } else if pct_yes <= 0.05 {
-                let label = if pct_yes <= 0.0 { "MUST be NO" } else { "almost must NO" };
-                must_haves.push((qid.clone(), label, pct_yes));
-            }
-        }
-        
-        if !must_haves.is_empty() {
-            any_must_haves = true;
-            println!("{}:", name);
-            for (qid, label, pct) in must_haves {
-                println!("  Q{}: {} ({:.1}% yes)", qid, label, pct * 100.0);
-            }
-        }
-    }
-    
-    if !any_must_haves {
-        println!("No must-haves or almost-must-haves at this stage.");
-    }
-
-    // Question 2: per-contestant question analysis
-    println!("\n--- Per-contestant question analysis ---");
-
-    for (name, _pct) in &percentages {
-        if name == "⚖️ TRUE TIE" {
-            continue; // Skip TRUE TIE for question analysis
-        }
-        let wins = *stats.winner_tally.get(name).unwrap_or(&0);
-        if wins == 0 {
-            continue;
-        }
-
-        let buckets = stats.person_question_buckets.get(name).unwrap();
-        let mut q_percentages: Vec<(String, f64)> = maybe_questions.iter()
-            .map(|(idx, qid)| {
-                let (y, n) = buckets[*idx];
-                let total = y + n;
-                let pct = if total > 0 { y as f64 / total as f64 } else { 0.0 };
-                (qid.clone(), pct)
-            })
-            .collect();
-        q_percentages.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
-
-        println!(
-            "Contestant {} has {} ways to win, and needs the following to happen (high percentages) or not (low percentages)",
-            name, wins
-        );
-        if let Some((qid, pct)) = q_percentages.first() {
-            println!("\t{}: {:.1}%", qid, pct * 100.0);
-        }
-        if let Some((qid, pct)) = q_percentages.last() {
-            println!("\t{}: {:.1}%", qid, pct * 100.0);
-        }
-    }
-
-    // Question 3: per-question analysis
-    println!("\nQuestion 3: for each maybe-question, what happens?");
-    
-    for (idx, qid) in &maybe_questions {
-        println!(
-            "Question {} coming TRUE will help (high percentages) or hurt (low percentages) these people",
-            qid
-        );
-
-        let mut person_needs: Vec<(String, f64)> = Vec::new();
-        for (name, _) in &percentages {
+        let mut any_must_haves = false;
+        for (name, _pct) in &percentages {
             if name == "⚖️ TRUE TIE" {
-                // Add TRUE TIE's percentage for this question
-                let (y, n) = stats.true_tie_question_buckets[*idx];
-                let total = y + n;
-                let pct = if total > 0 { y as f64 / total as f64 } else { 0.0 };
-                if stats.true_tie_count > 0 {
-                    person_needs.push((name.clone(), pct));
-                }
                 continue;
             }
             let wins = *stats.winner_tally.get(name).unwrap_or(&0);
             if wins == 0 {
                 continue;
             }
+            
             let buckets = stats.person_question_buckets.get(name).unwrap();
-            let (y, n) = buckets[*idx];
-            let total = y + n;
-            let pct = if total > 0 { y as f64 / total as f64 } else { 0.0 };
-            person_needs.push((name.clone(), pct));
+            let mut must_haves: Vec<(String, &str, f64)> = Vec::new();
+            
+            for (idx, qid) in &maybe_questions {
+                let (y, n) = buckets[*idx];
+                let total = y + n;
+                if total == 0 {
+                    continue;
+                }
+                let pct_yes = y as f64 / total as f64;
+                
+                if pct_yes >= 0.95 {
+                    let label = if pct_yes >= 1.0 { "MUST be YES" } else { "almost must YES" };
+                    must_haves.push((qid.clone(), label, pct_yes));
+                } else if pct_yes <= 0.05 {
+                    let label = if pct_yes <= 0.0 { "MUST be NO" } else { "almost must NO" };
+                    must_haves.push((qid.clone(), label, pct_yes));
+                }
+            }
+            
+            if !must_haves.is_empty() {
+                any_must_haves = true;
+                println!("{}:", name);
+                for (qid, label, pct) in must_haves {
+                    println!("  Q{}: {} ({:.1}% yes)", qid, label, pct * 100.0);
+                }
+            }
         }
-        person_needs.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
-
-        for (name, pct) in person_needs {
-            println!("\t{}: {:.1}%", name, pct * 100.0);
+        
+        if !any_must_haves {
+            println!("No must-haves or almost-must-haves at this stage.");
         }
     }
 
-    // Question 4: by yes-count (including true ties)
-    println!("\nQuestion 4: who wins, organized by how many more 'yes' outcomes");
-    
+    // Section: Per-contestant question analysis
+    if show_per_contestant {
+        println!("\n--- Per-contestant question analysis ---");
+
+        for (name, _pct) in &percentages {
+            if name == "⚖️ TRUE TIE" {
+                continue;
+            }
+            let wins = *stats.winner_tally.get(name).unwrap_or(&0);
+            if wins == 0 {
+                continue;
+            }
+
+            let buckets = stats.person_question_buckets.get(name).unwrap();
+            let mut q_percentages: Vec<(String, f64)> = maybe_questions.iter()
+                .map(|(idx, qid)| {
+                    let (y, n) = buckets[*idx];
+                    let total = y + n;
+                    let pct = if total > 0 { y as f64 / total as f64 } else { 0.0 };
+                    (qid.clone(), pct)
+                })
+                .collect();
+            q_percentages.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
+
+            println!(
+                "Contestant {} has {} ways to win, and needs the following to happen (high percentages) or not (low percentages)",
+                name, wins
+            );
+            if let Some((qid, pct)) = q_percentages.first() {
+                println!("\t{}: {:.1}%", qid, pct * 100.0);
+            }
+            if let Some((qid, pct)) = q_percentages.last() {
+                println!("\t{}: {:.1}%", qid, pct * 100.0);
+            }
+        }
+    }
+
+    // Question 3: per-question analysis
+    // Section: Per-question analysis
+    if show_per_question {
+        println!("\n--- Per-question analysis ---");
+        println!("For each unresolved question, who benefits if it comes TRUE?\n");
+
+        for (idx, qid) in &maybe_questions {
+            println!(
+                "Question {} coming TRUE will help (high %) or hurt (low %):",
+                qid
+            );
+
+            let mut person_needs: Vec<(String, f64)> = Vec::new();
+            for (name, _) in &percentages {
+                if name == "⚖️ TRUE TIE" {
+                    let (y, n) = stats.true_tie_question_buckets[*idx];
+                    let total = y + n;
+                    let pct = if total > 0 { y as f64 / total as f64 } else { 0.0 };
+                    if stats.true_tie_count > 0 {
+                        person_needs.push((name.clone(), pct));
+                    }
+                    continue;
+                }
+                let wins = *stats.winner_tally.get(name).unwrap_or(&0);
+                if wins == 0 {
+                    continue;
+                }
+                let buckets = stats.person_question_buckets.get(name).unwrap();
+                let (y, n) = buckets[*idx];
+                let total = y + n;
+                let pct = if total > 0 { y as f64 / total as f64 } else { 0.0 };
+                person_needs.push((name.clone(), pct));
+            }
+            person_needs.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
+
+            for (name, pct) in person_needs {
+                println!("\t{}: {:.1}%", name, pct * 100.0);
+            }
+        }
+    }
+
+}
+
+fn print_yes_count_buckets(_data: &GameData, stats: &Stats) {
+    println!("\n--- Wins by yes-count ---");
+    println!("Who wins depending on how many more 'yes' outcomes occur?\n");
+
     for (num_yes, bucket) in stats.yes_buckets.iter().enumerate() {
         let true_ties_at_level = stats.true_ties_by_yes_count.get(num_yes).copied().unwrap_or(0);
         if bucket.is_empty() && true_ties_at_level == 0 {
             continue;
         }
-        println!("If there are {} more yesses, then these people have win-paths:", num_yes);
-        
-        // Combine regular contestants with true tie count
+        println!("If {} more yesses:", num_yes);
+
         let mut sorted: Vec<(String, u64)> = bucket.iter()
             .map(|(name, count)| (name.clone(), *count))
             .collect();
@@ -613,7 +635,7 @@ fn print_results(data: &GameData, stats: &Stats) {
             sorted.push(("⚖️ TRUE TIE".to_string(), true_ties_at_level));
         }
         sorted.sort_by(|a, b| b.1.cmp(&a.1));
-        
+
         for (name, count) in sorted {
             println!("\t{}: {}", name, count);
         }
@@ -627,14 +649,21 @@ fn print_results(data: &GameData, stats: &Stats) {
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     
-    let data_path = if args.len() > 1 {
-        args[1].clone()
+    // Parse flags
+    let full_mode = args.iter().any(|a| a == "--full");
+    let data_args: Vec<&String> = args.iter().skip(1).filter(|a| !a.starts_with("--")).collect();
+    
+    let data_path = if !data_args.is_empty() {
+        data_args[0].clone()
     } else {
-        eprintln!("Usage: {} <data-file.json>", args[0]);
+        eprintln!("Usage: {} <data-file.json> [--full]", args[0]);
+        eprintln!();
+        eprintln!("Options:");
+        eprintln!("  --full    Show all output (no interactive menu)");
         eprintln!();
         eprintln!("Example:");
-        eprintln!("  {} data/2026-test.json   # Fast test (14 unresolved questions)", args[0]);
-        eprintln!("  {} data/2026.json        # Full run (26 unresolved)", args[0]);
+        eprintln!("  {} data/2026-test.json        # Interactive mode", args[0]);
+        eprintln!("  {} data/2026.json --full      # Full output", args[0]);
         eprintln!();
         eprintln!("Data files should be JSON with: year, questions, outcomes, predictions");
         std::process::exit(1);
@@ -677,7 +706,44 @@ fn main() {
              winners_determined,
              stats.true_tie_count);
 
-    print_results(&data, &stats);
+    if full_mode {
+        print_results(&data, &stats, true, true, true, true, true);
+    } else {
+        // Always show summary
+        print_results(&data, &stats, true, false, false, false, false);
+        
+        // Interactive menu
+        println!("\n--- View more details ---");
+        println!("  1) Win paths & tie-breaking analysis");
+        println!("  2) Must-haves & almost-must-haves");
+        println!("  3) Per-contestant question analysis");
+        println!("  4) Per-question analysis");
+        println!("  5) Wins by yes-count");
+        println!("  q) Quit");
+        println!();
+        
+        use std::io::{self, BufRead, Write};
+        let stdin = io::stdin();
+        loop {
+            print!("> ");
+            io::stdout().flush().unwrap();
+            
+            let mut line = String::new();
+            if stdin.lock().read_line(&mut line).is_err() {
+                break;
+            }
+            
+            match line.trim() {
+                "1" => print_results(&data, &stats, false, true, false, false, false),
+                "2" => print_results(&data, &stats, false, false, true, false, false),
+                "3" => print_results(&data, &stats, false, false, false, true, false),
+                "4" => print_results(&data, &stats, false, false, false, false, true),
+                "5" => print_yes_count_buckets(&data, &stats),
+                "q" | "Q" | "" => break,
+                _ => println!("Unknown option. Enter 1-5 or q to quit."),
+            }
+        }
+    }
 }
 
 // ============================================================================
