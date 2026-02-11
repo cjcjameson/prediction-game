@@ -527,7 +527,8 @@ fn print_results(
                 any_must_haves = true;
                 println!("{}:", name);
                 for (qid, label, pct) in must_haves {
-                    println!("  Q{}: {} ({:.1}% yes)", qid, label, pct * 100.0);
+                    let desc = data.questions.get(&qid).map(|s| s.as_str()).unwrap_or("?");
+                    println!("  Q{} ({}): {} ({:.1}% yes)", qid, desc, label, pct * 100.0);
                 }
             }
         }
@@ -566,10 +567,12 @@ fn print_results(
                 name, wins
             );
             if let Some((qid, pct)) = q_percentages.first() {
-                println!("\t{}: {:.1}%", qid, pct * 100.0);
+                let desc = data.questions.get(qid).map(|s| s.as_str()).unwrap_or("?");
+                println!("\t{} ({}): {:.1}%", qid, desc, pct * 100.0);
             }
             if let Some((qid, pct)) = q_percentages.last() {
-                println!("\t{}: {:.1}%", qid, pct * 100.0);
+                let desc = data.questions.get(qid).map(|s| s.as_str()).unwrap_or("?");
+                println!("\t{} ({}): {:.1}%", qid, desc, pct * 100.0);
             }
         }
     }
@@ -581,9 +584,10 @@ fn print_results(
         println!("For each unresolved question, who benefits if it comes TRUE?\n");
 
         for (idx, qid) in &maybe_questions {
+            let desc = data.questions.get(qid).map(|s| s.as_str()).unwrap_or("?");
             println!(
-                "Question {} coming TRUE will help (high %) or hurt (low %):",
-                qid
+                "Question {} ({}) coming TRUE will help (high %) or hurt (low %):",
+                qid, desc
             );
 
             let mut person_needs: Vec<(String, f64)> = Vec::new();
