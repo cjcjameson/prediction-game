@@ -29,32 +29,32 @@
     "Z": "Chaos Erupts! Wait, not Chaos. 50 Volcanoes."
   },
   "outcomes": {
-    "A": "m",
-    "B": "n",
-    "C": "m",
-    "D": "m",
-    "E": "m",
-    "F": "m",
-    "G": "m",
-    "H": "y",
-    "I": "n",
-    "J": "m",
-    "K": "m",
-    "L": "m",
-    "M": "y",
-    "N": "n",
-    "O": "n",
-    "P": "y",
-    "Q": "y",
-    "R": "y",
-    "S": "m",
-    "T": "y",
-    "U": "y",
-    "V": "y",
-    "W": "y",
-    "X": "m",
-    "Y": "m",
-    "Z": "m"
+    "A": "m",   // AI-Assisted Year-End Hot 100 Song
+    "B": "n",   // Starr Wars: Vita VonTesse Beats Mia on Drag Race
+    "C": "m",   // Change in 30 Tallest Skyscrapers
+    "D": "m",   // NFL Octuple Scorigami!
+    "E": "m",   // Dragon/Wings at 10k+ Drone Show
+    "F": "m",   // Dragging Wings at Victorias Secret Fashion Show
+    "G": "m",   // Garfield Eats 7 Donuts
+    "H": "y",   // Colbert's Final Wave is with Right Hand
+    "I": "n",   // 6 Decks of Yellow Cards at World Cup
+    "J": "y",   // Grogu Sneezes, Farts, Coughs, or Burps
+    "K": "m",   // Yaaasss Queeen captured by the winner of the World Chess Championship
+    "L": "m",   // Jake From State Farm Summoned Thrice
+    "M": "y",   // PREDICULOUS in Wheel of Fortune Puzzle
+    "N": "n",   // 2 Immortals in Combat in Mortal Kombat 2
+    "O": "n",   // Boomer Wins A Razzie
+    "P": "y",   // $40,000,000,000,000.00 < National Debt
+    "Q": "y",   // (Butt) Crack in the Bridge (-rton)
+    "R": "y",   // Nom Nom Nom Nom Nom Nom Nom: No Tony Wins
+    "S": "m",   // Forky Gets Stuck
+    "T": "y",   // All Cats Lose Anthrocon Dance Competition
+    "U": "y",   // 5 Slots in a Row, Balled on The Wall
+    "V": "y",   // Johan Wins An Olympic Medal... Any Johan
+    "W": "y",   // Obama's Playlist Features Multiple Sex Acts
+    "X": "y",   // Blues Outperform Reds: Midterms or Sports
+    "Y": "m",   // 150 Spanks from @thedonutdaddy
+    "Z": "m"    // Chaos Erupts! Wait, not Chaos. 50 Volcanoes.
   },
   "predictions": {
     "Melody💋": [

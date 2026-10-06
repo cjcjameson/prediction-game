@@ -119,11 +119,43 @@ impl Stats {
 // Data loading and validation
 // ============================================================================
 
+/// Removes `// ...` comments (outside of string literals) so data files can be annotated.
+fn strip_line_comments(input: &str) -> String {
+    let mut out = String::with_capacity(input.len());
+    let mut chars = input.chars().peekable();
+    let mut in_string = false;
+    while let Some(c) = chars.next() {
+        if in_string {
+            out.push(c);
+            if c == '\\' {
+                if let Some(escaped) = chars.next() {
+                    out.push(escaped);
+                }
+            } else if c == '"' {
+                in_string = false;
+            }
+        } else if c == '"' {
+            in_string = true;
+            out.push(c);
+        } else if c == '/' && chars.peek() == Some(&'/') {
+            while let Some(&next) = chars.peek() {
+                if next == '\n' {
+                    break;
+                }
+                chars.next();
+            }
+        } else {
+            out.push(c);
+        }
+    }
+    out
+}
+
 impl GameData {
     pub fn load(path: &str) -> Result<Self, String> {
         let contents = fs::read_to_string(path)
             .map_err(|e| format!("Failed to read {}: {}", path, e))?;
-        let data: GameData = serde_json::from_str(&contents)
+        let data: GameData = serde_json::from_str(&strip_line_comments(&contents))
             .map_err(|e| format!("Failed to parse JSON: {}", e))?;
         Ok(data)
     }

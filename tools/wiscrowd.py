@@ -15,6 +15,7 @@ the collective sentiment about which predictions are most/least likely.
 """
 
 import json
+import re
 import sys
 from statistics import mean
 
@@ -60,7 +61,9 @@ def main():
     
     # Load data
     with open(input_path) as f:
-        data = json.load(f)
+        # Strip `// ...` annotations (outside of strings) before parsing
+        text = re.sub(r'("(?:\\.|[^"\\])*")|//[^\n]*', lambda m: m.group(1) or "", f.read())
+        data = json.loads(text)
     
     # Compute WISCROWD rankings
     wiscrowd = compute_wiscrowd_rankings(data["predictions"])
